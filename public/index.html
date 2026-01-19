@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Personalized Career Advisor - Student Portal</title>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <div class="app-container">
+      <header class="app-header">
+        <div class="logo">Career<span>Path</span></div>
+        <nav class="nav-links">
+          <div class="nav-left">
+            <button id="nav-aptitude" class="nav-btn nav-btn-primary">
+              Aptitude
+            </button>
+            <button id="nav-contact" class="nav-btn">
+              Contact
+            </button>
+          </div>
+          <div class="nav-right">
+            <button id="nav-login" class="nav-btn">Login</button>
+            <button id="nav-signup" class="nav-btn">Signup</button>
+            <div id="nav-user" class="nav-user hidden">
+              <span id="nav-user-name"></span>
+              <button id="nav-logout" type="button" class="nav-btn small">
+                Logout
+              </button>
+            </div>
+          </div>
+        </nav>
+      </header>
+
+      <main class="app-main">
+        <!-- Hero / Landing Section -->
+        <section id="hero-section" class="hero card">
+          <div class="hero-inner">
+            <div class="hero-content">
+              <p class="badge">Student Career & Aptitude Companion</p>
+              <h1>
+                Find the right career
+                <span>based on who you are.</span>
+              </h1>
+              <p class="hero-subtitle">
+                Answer a few simple questions about your academics, interests,
+                and goals. We’ll help you understand your strengths and which
+                career paths can fit you best.
+              </p>
+              <div class="hero-actions">
+                <button
+                  id="hero-aptitude-btn"
+                  class="btn btn-primary hero-cta"
+                  type="button"
+                >
+                  Explore Aptitude Guidance
+                </button>
+                <button
+                  id="hero-login-btn"
+                  class="btn btn-outline"
+                  type="button"
+                >
+                  Login to continue
+                </button>
+              </div>
+              <div class="feature-grid">
+                <div class="feature-card">
+                  <div class="feature-icon">🎯</div>
+                  <h3>Personalized</h3>
+                  <p>Uses your marks, interests, & skills to guide options.</p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">🧠</div>
+                  <h3>Aptitude-aligned</h3>
+                  <p>See which careers match how you naturally think.</p>
+                </div>
+                <div class="feature-card">
+                  <div class="feature-icon">📍</div>
+                  <h3>Practical</h3>
+                  <p>
+                    Considers exams, budget, and location constraints too.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="hero-image">
+              <div class="hero-image-card">
+                <img
+                  src="./images/Gemini_Generated_Image_lco3ualco3ualco3.png"
+                  alt="Students exploring personalized career paths and aptitude results"
+                  onerror="this.style.display='none'"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Auth Gate Info -->
+        <section id="auth-status" class="auth-status info-card hidden">
+          <p id="auth-message"></p>
+          <button id="logout-btn" class="btn btn-outline small hidden">
+            Logout
+          </button>
+        </section>
+
+        <!-- Auth Modal -->
+        <div id="auth-modal" class="auth-modal hidden">
+          <div class="auth-modal-inner card">
+            <div class="card-header auth-header-row">
+              <div>
+                <h2 id="auth-title">Student Login</h2>
+                <p class="subtitle" id="auth-subtitle">
+                  Login to access your saved profile, aptitude overview, and
+                  personalized career guidance.
+                </p>
+              </div>
+              <button id="auth-close" type="button" class="icon-btn" aria-label="Close">
+                ✕
+              </button>
+            </div>
+
+          <!-- Login Form -->
+          <form id="login-form" class="form active-form">
+            <div class="form-grid">
+              <div class="form-group full">
+                <label for="login-email">Email</label>
+                <input
+                  type="email"
+                  id="login-email"
+                  required
+                  placeholder="you@example.com"
+                />
+              </div>
+              <div class="form-group full">
+                <label for="login-password">Password</label>
+                <div class="password-field">
+                  <input
+                    type="password"
+                    id="login-password"
+                    required
+                    placeholder="Enter your password"
+                  />
+                  <button
+                    type="button"
+                    id="login-password-toggle"
+                    class="icon-btn small"
+                    aria-label="Show or hide password"
+                  >
+                    👁
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                Login
+              </button>
+            </div>
+          </form>
+
+          <!-- Signup Form (shown when accessed from navbar Signup) -->
+          <form id="signup-form" class="form">
+            <!-- 1. Basic Information -->
+            <h3 class="section-title">1. Basic Information</h3>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label for="full-name">Enter Full Name <span>*</span></label>
+                <input
+                  type="text"
+                  id="full-name"
+                  required
+                  placeholder="Your full name"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email <span>*</span></label>
+                <input
+                  type="email"
+                  id="email"
+                  required
+                  placeholder="you@example.com"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password <span>*</span></label>
+                <input
+                  type="password"
+                  id="password"
+                  required
+                  minlength="6"
+                  placeholder="Min. 6 characters"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="class">Select Class <span>*</span></label>
+                <select id="class" required>
+                  <option value="">Select</option>
+                  <option value="10th">10th</option>
+                  <option value="12th">12th</option>
+                  <option value="Degree">Degree / College</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="stream">Select Stream</label>
+                <select id="stream">
+                  <option value="">Select</option>
+                  <option value="Science">Science</option>
+                  <option value="Commerce">Commerce</option>
+                  <option value="Arts">Arts</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 2. Academic Details -->
+            <h3 class="section-title">2. Academic Details</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="tenth-perc">10th Percentage</label>
+                <input
+                  type="number"
+                  id="tenth-perc"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  placeholder="e.g. 85.5"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="twelfth-perc">12th Percentage</label>
+                <input
+                  type="number"
+                  id="twelfth-perc"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  placeholder="e.g. 88.0"
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="cgpa-sem"
+                  >If in college → Current CGPA / Semester <span>*</span></label
+                >
+                <input
+                  type="text"
+                  id="cgpa-sem"
+                  placeholder="e.g. 8.2 / Sem 4"
+                />
+              </div>
+            </div>
+
+            <!-- 3. Subject Interests -->
+            <h3 class="section-title">3. Subject Interests (Rate 1–5)</h3>
+            <div class="rating-group">
+              <label>How much do you enjoy Coding / Programming?</label>
+              <div class="rating-row" data-name="codingInterest"></div>
+            </div>
+            <div class="rating-group">
+              <label>How much do you enjoy Maths?</label>
+              <div class="rating-row" data-name="mathsInterest"></div>
+            </div>
+            <div class="rating-group">
+              <label>How much do you enjoy Science (Physics/Chemistry/Biology)?</label>
+              <div class="rating-row" data-name="scienceInterest"></div>
+            </div>
+            <div class="rating-group">
+              <label>How much do you enjoy Commerce / Business Studies?</label>
+              <div class="rating-row" data-name="commerceInterest"></div>
+            </div>
+            <div class="rating-group">
+              <label>How much do you enjoy Design / Creativity?</label>
+              <div class="rating-row" data-name="designInterest"></div>
+            </div>
+            <div class="rating-group">
+              <label>How much do you enjoy Working with People / Communication?</label>
+              <div class="rating-row" data-name="peopleInterest"></div>
+            </div>
+
+            <!-- 4. Skills -->
+            <h3 class="section-title">4. Skills (Self-evaluation)</h3>
+            <div class="chip-group" id="skills">
+              <label class="chip">
+                <input type="checkbox" value="Coding / Computer" /> Coding /
+                Computer
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Maths" /> Maths
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Science" /> Science
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Creativity / Design" />
+                Creativity / Design
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Management / Leadership" />
+                Management / Leadership
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Communication" /> Communication
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Finance / Accounting" /> Finance /
+                Accounting
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Problem Solving" /> Problem
+                Solving
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Research" /> Research
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="None / Not sure" /> None / Not
+                sure
+              </label>
+            </div>
+
+            <!-- 5. Career Preferences -->
+            <h3 class="section-title">5. Career Preferences</h3>
+            <div class="chip-group" id="career-domains">
+              <label class="chip">
+                <input type="checkbox" value="Software / IT" /> Software / IT
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Engineering" /> Engineering
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Medicine / Biology" /> Medicine /
+                Biology
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Business / Management" />
+                Business / Management
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Finance / Accounting" /> Finance /
+                Accounting
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Design / Creativity" /> Design /
+                Creativity
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Government Services" />
+                Government Services
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Entrepreneurship" />
+                Entrepreneurship
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Research" /> Research
+              </label>
+              <label class="chip">
+                <input type="checkbox" value="Not sure" /> Not sure
+              </label>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="higher-studies"
+                  >Do you plan to pursue higher studies?</label
+                >
+                <select id="higher-studies">
+                  <option value="">Select</option>
+                  <option value="Yes (India)">Yes (India)</option>
+                  <option value="Yes (Abroad)">Yes (Abroad)</option>
+                  <option value="Maybe">Maybe</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="entrance-exams"
+                  >Are you preparing for any entrance exams?</label
+                >
+                <select id="entrance-exams" multiple size="4">
+                  <option value="JEE">JEE</option>
+                  <option value="NEET">NEET</option>
+                  <option value="CET">CET</option>
+                  <option value="CUET">CUET</option>
+                  <option value="CA/CS/CMA">CA/CS/CMA</option>
+                  <option value="Banking/SSC">Banking/SSC</option>
+                  <option value="None">None</option>
+                </select>
+                <small class="hint">Hold Ctrl (Windows) to select multiple</small>
+              </div>
+            </div>
+
+            <!-- 6. Work Preferences -->
+            <h3 class="section-title">6. Work Preferences</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="work-environment"
+                  >What type of work environment do you prefer?</label
+                >
+                <select id="work-environment">
+                  <option value="">Select</option>
+                  <option value="Office work">Office work</option>
+                  <option value="Field work">Field work</option>
+                  <option value="Remote / online">Remote / online</option>
+                  <option value="Mix of both">Mix of both</option>
+                  <option value="Not sure">Not sure</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="work-style">How do you prefer working?</label>
+                <select id="work-style" multiple size="4">
+                  <option value="With computers">With computers</option>
+                  <option value="With people">With people</option>
+                  <option value="With machines/tools">
+                    With machines/tools
+                  </option>
+                  <option value="With data">With data</option>
+                  <option value="With creative tasks">
+                    With creative tasks
+                  </option>
+                  <option value="Not sure">Not sure</option>
+                </select>
+                <small class="hint">Hold Ctrl (Windows) to select multiple</small>
+              </div>
+            </div>
+
+            <!-- 7. Personal Constraints -->
+            <h3 class="section-title">7. Personal Constraints</h3>
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="financial-constraints"
+                  >Do you have any financial constraints regarding higher
+                  studies?</label
+                >
+                <select id="financial-constraints">
+                  <option value="">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                  <option value="Maybe">Maybe</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="location-restrictions"
+                  >Any location restrictions?</label
+                >
+                <select id="location-restrictions">
+                  <option value="">Select</option>
+                  <option value="Must stay in home city">
+                    Must stay in home city
+                  </option>
+                  <option value="Can relocate within India">
+                    Can relocate within India
+                  </option>
+                  <option value="Can relocate abroad">
+                    Can relocate abroad
+                  </option>
+                  <option value="No restrictions">No restrictions</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 8. Open Questions -->
+            <h3 class="section-title">8. Open Questions</h3>
+            <div class="form-grid">
+              <div class="form-group full">
+                <label for="dream-career"
+                  >What is your dream career or goal (in your own words)?</label
+                >
+                <textarea
+                  id="dream-career"
+                  rows="3"
+                  placeholder="Describe your dream career..."
+                ></textarea>
+              </div>
+              <div class="form-group full">
+                <label for="career-confusion"
+                  >What confuses you the most about choosing a career?</label
+                >
+                <textarea
+                  id="career-confusion"
+                  rows="3"
+                  placeholder="Share your doubts or confusion..."
+                ></textarea>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                Save Profile & Create Account
+              </button>
+            </div>
+          </form>
+          </div>
+        </div>
+
+        <!-- Aptitude Section (Visible only if logged in) -->
+        <section id="aptitude-section" class="card hidden">
+          <div class="card-header">
+            <h2>Aptitude & Career Fit Overview</h2>
+            <p class="subtitle">
+              Based on your saved profile we highlight where your strengths and
+              interests point you, and suggest starting career directions.
+            </p>
+          </div>
+
+          <div id="student-summary" class="info-card"></div>
+
+          <div id="aptitude-insight" class="info-card hidden"></div>
+
+          <div class="aptitude-score-grid">
+            <div class="aptitude-score-card">
+              <h3>Quantitative</h3>
+              <p>Numbers, speed, basic maths.</p>
+              <div class="score-row">
+                <span class="score-label">Score</span>
+                <span id="quant-score" class="score-value">-- / 10</span>
+              </div>
+            </div>
+            <div class="aptitude-score-card">
+              <h3>Logical Reasoning</h3>
+              <p>Patterns, puzzles, analytical thinking.</p>
+              <div class="score-row">
+                <span class="score-label">Score</span>
+                <span id="logic-score" class="score-value">-- / 10</span>
+              </div>
+            </div>
+            <div class="aptitude-score-card">
+              <h3>Verbal & Communication</h3>
+              <p>English usage, comprehension, expression.</p>
+              <div class="score-row">
+                <span class="score-label">Score</span>
+                <span id="verbal-score" class="score-value">-- / 10</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="aptitude-actions">
+            <button
+              id="start-aptitude-btn"
+              class="btn btn-primary"
+              type="button"
+            >
+              Start Aptitude Test
+            </button>
+            <button id="edit-profile-btn" class="btn btn-outline">
+              Edit Profile
+            </button>
+          </div>
+        </section>
+
+        <!-- Aptitude Test Full Screen -->
+        <div id="aptitude-test-screen" class="aptitude-test-screen hidden">
+          <div class="aptitude-test-container">
+            <!-- Section Header -->
+            <div class="test-header">
+              <div>
+                <h2 id="test-section-title">Section 1: Quantitative Aptitude</h2>
+                <p class="subtitle" id="test-section-subtitle">
+                  Answer all 10 questions. Each question is worth 1 mark.
+                </p>
+              </div>
+              <div class="test-progress">
+                <span id="test-progress-text">Question 1 of 10</span>
+                <div class="progress-bar">
+                  <div id="test-progress-fill" class="progress-fill"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Questions Container -->
+            <div id="aptitude-questions-container" class="aptitude-questions">
+              <!-- Questions injected by JS -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="test-actions">
+              <button
+                id="prev-question-btn"
+                type="button"
+                class="btn btn-outline hidden"
+              >
+                ← Previous
+              </button>
+              <button
+                id="next-question-btn"
+                type="button"
+                class="btn btn-primary"
+              >
+                Next →
+              </button>
+              <button
+                id="submit-section-btn"
+                type="button"
+                class="btn btn-primary hidden"
+              >
+                Complete Section
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="aptitude-results-screen" class="aptitude-test-screen hidden">
+          <div class="aptitude-test-container">
+            <div class="test-header">
+              <h2>Test Results</h2>
+              <p class="subtitle">Your aptitude scores and average</p>
+            </div>
+            <div id="results-content" class="results-content">
+              <!-- Results injected by JS -->
+            </div>
+            <div class="test-actions">
+              <button
+                id="close-results-btn"
+                type="button"
+                class="btn btn-primary"
+              >
+                Close & Return
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Counselling Highlight + Contact Section -->
+        <section id="contact-section" class="card contact-card">
+          <div class="counselling-banner">
+            <div class="counselling-overlay">
+              <h2>Career Counselling, Done Personally</h2>
+              <p>
+                Our mentors guide students one-on-one to help them choose the
+                right stream, exams, and career path based on their aptitude and
+                goals.
+              </p>
+            </div>
+          </div>
+
+          <div class="contact-grid">
+            <div class="contact-info">
+              <h3>Contact Us</h3>
+              <p class="subtitle">
+                Have questions or want a detailed counselling session? Reach out
+                to us.
+              </p>
+              <ul class="contact-list">
+                <li><strong>Email:</strong> support@careerpath.in</li>
+                <li><strong>Phone:</strong> +91-98765-43210</li>
+                <li><strong>Location:</strong> Pune, Maharashtra, India</li>
+              </ul>
+              <form class="contact-form">
+                <div class="form-group full">
+                  <label for="contact-name">Your Name</label>
+                  <input
+                    type="text"
+                    id="contact-name"
+                    placeholder="Enter your full name"
+                  />
+                </div>
+                <div class="form-group full">
+                  <label for="contact-email">Email</label>
+                  <input
+                    type="email"
+                    id="contact-email"
+                    placeholder="you@example.com"
+                  />
+                </div>
+                <div class="form-group full">
+                  <label for="contact-message">How can we help you?</label>
+                  <textarea
+                    id="contact-message"
+                    rows="3"
+                    placeholder="Share your query. E.g. confused between two streams, want exam roadmap, etc."
+                  ></textarea>
+                </div>
+                <div class="form-actions">
+                  <button type="button" class="btn btn-primary small">
+                    Submit (Coming Soon)
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <div class="students-showcase">
+              <h3>Students counselled</h3>
+              <div class="students-grid">
+                <article class="student-card">
+                  <img
+                    src="./images/Pratik Photo.jpeg"
+                    alt="Student who received personalized career counselling"
+                  />
+                  <div class="student-info">
+                    <h4>Pratik Jitendra Patil</h4>
+                    <p>Stream decision &amp; exam strategy clarified.</p>
+                  </div>
+                </article>
+                <article class="student-card">
+                  <img
+                    src="images/WhatsApp Image 2025-12-02 at 16.14.31_3f5393ef.jpg"
+                    alt="Another student after successful career counselling session"
+                  />
+                  <div class="student-info">
+                    <h4>Rohan Bhagwan Gawade</h4>
+                    <p>Found the right domain based on aptitude insights.</p>
+                  </div>
+                </article>
+              </div>
+              <p class="students-note">
+                *Images represent students who have recently been guided using
+                this system.
+              </p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="app-footer">
+        <p>Personalized Career &amp; Advisor • Student Portal</p>
+        <p class="footer-links">
+          <a href="#hero-section">Home</a>
+          <span>•</span>
+          <a href="#contact-section">Contact</a>
+        </p>
+      </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+  </body>
+  </html>
+
+

@@ -1,0 +1,23 @@
+{
+  "name": "personalized-career-advisor",
+  "version": "1.0.0",
+  "description": "Student Career & Aptitude Advisor Application",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js"
+  },
+  "keywords": [
+    "career",
+    "advisor",
+    "aptitude",
+    "student"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5"
+  }
+}

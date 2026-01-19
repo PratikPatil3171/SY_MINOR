@@ -1,0 +1,55 @@
+<svg width="480" height="320" viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4F46E5"/>
+      <stop offset="1" stop-color="#0F172A"/>
+    </linearGradient>
+    <linearGradient id="pathGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22C55E"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="16" y="16" width="448" height="288" rx="28" fill="#020617"/>
+  <rect x="16" y="16" width="448" height="288" rx="28" fill="url(#bgGrad)" opacity="0.4"/>
+  <rect x="32" y="40" width="416" height="64" rx="16" fill="#020617" fill-opacity="0.7" stroke="#1F2937"/>
+
+  <circle cx="64" cy="72" r="8" fill="#22C55E"/>
+  <circle cx="88" cy="72" r="8" fill="#F97316"/>
+  <circle cx="112" cy="72" r="8" fill="#EF4444"/>
+
+  <rect x="56" y="128" width="144" height="152" rx="18" fill="#020617" fill-opacity="0.9" stroke="#1F2937"/>
+  <rect x="64" y="136" width="80" height="10" rx="5" fill="#4B5563"/>
+  <rect x="64" y="152" width="104" height="8" rx="4" fill="#6B7280"/>
+
+  <circle cx="96" cy="196" r="26" fill="#0F172A" stroke="#1F2937"/>
+  <circle cx="96" cy="188" r="12" fill="#38BDF8"/>
+  <rect x="84" y="204" width="24" height="14" rx="6" fill="#1F2937"/>
+
+  <rect x="64" y="236" width="112" height="8" rx="4" fill="#374151"/>
+  <rect x="64" y="252" width="96" height="8" rx="4" fill="#4B5563"/>
+
+  <path d="M216 252C248 224 272 216 304 216C336 216 360 224 392 252" stroke="url(#pathGrad)" stroke-width="6" stroke-linecap="round" stroke-dasharray="4 8"/>
+  <circle cx="248" cy="228" r="7" fill="#22C55E"/>
+  <circle cx="280" cy="220" r="7" fill="#22C55E"/>
+  <circle cx="312" cy="220" r="7" fill="#22C55E"/>
+  <circle cx="344" cy="228" r="7" fill="#22C55E"/>
+
+  <rect x="224" y="96" width="104" height="80" rx="16" fill="#020617" fill-opacity="0.9" stroke="#1F2937"/>
+  <rect x="236" y="108" width="60" height="10" rx="5" fill="#4B5563"/>
+  <rect x="236" y="126" width="80" height="8" rx="4" fill="#6B7280"/>
+  <rect x="236" y="146" width="72" height="6" rx="3" fill="#4F46E5" fill-opacity="0.7"/>
+  <rect x="236" y="160" width="52" height="6" rx="3" fill="#22C55E" fill-opacity="0.8"/>
+
+  <rect x="344" y="112" width="96" height="72" rx="16" fill="#020617" fill-opacity="0.9" stroke="#1F2937"/>
+  <circle cx="368" cy="136" r="10" fill="#22C55E"/>
+  <circle cx="400" cy="136" r="10" fill="#F59E0B"/>
+  <circle cx="384" cy="164" r="18" fill="#0F172A" stroke="#1F2937"/>
+  <path d="M376 162L382 168L392 156" stroke="#22C55E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <text x="240" y="268" fill="#9CA3AF" font-size="11" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif">
+    Personalized Career & Aptitude Paths
+  </text>
+</svg>
+
+

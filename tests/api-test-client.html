@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Recommendation API - Test Client</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .status {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .form-section h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .range-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .range-group input[type="range"] {
+            margin-bottom: 5px;
+        }
+        
+        .range-value {
+            text-align: center;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        .career-card {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s;
+        }
+        
+        .career-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .career-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .career-title {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .career-score {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+        }
+        
+        .career-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .score-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .score-item {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .score-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .score-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            white-space: pre-line;
+            line-height: 1.8;
+        }
+        
+        .sample-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        
+        .sample-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .sample-btn:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Career Recommendation API - Test Client</h1>
+            <p>Phase 1: SBERT + FAISS + Simple Scoring</p>
+        </div>
+        
+        <div class="content">
+            <div id="status" class="status loading">
+                Checking API status...
+            </div>
+            
+            <div class="sample-buttons">
+                <button class="sample-btn" onclick="loadSample(1)">Sample: Coding Enthusiast</button>
+                <button class="sample-btn" onclick="loadSample(2)">Sample: Design Focused</button>
+                <button class="sample-btn" onclick="loadSample(3)">Sample: Commerce Student</button>
+                <button class="sample-btn" onclick="loadSample(4)">Sample: Gaming Passion</button>
+            </div>
+            
+            <form id="recommendationForm">
+                <div class="form-section">
+                    <h3>📋 Basic Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Stream:</label>
+                            <select id="stream" required>
+                                <option value="Science">Science</option>
+                                <option value="Commerce">Commerce</option>
+                                <option value="Arts">Arts</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Class Level:</label>
+                            <select id="class_level" required>
+                                <option value="10th">10th</option>
+                                <option value="12th" selected>12th</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>10th Marks (%):</label>
+                            <input type="number" id="marks_10th" min="0" max="100" value="85">
+                        </div>
+                        <div class="form-group">
+                            <label>12th Marks (%):</label>
+                            <input type="number" id="marks_12th" min="0" max="100" value="88">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>💡 Interests (0-5 scale)</h3>
+                    <div class="form-row">
+                        <div class="range-group">
+                            <label>Coding:</label>
+                            <input type="range" id="coding_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'coding_value')">
+                            <div class="range-value" id="coding_value">3/5</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Math:</label>
+                            <input type="range" id="math_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'math_value')">
+                            <div class="range-value" id="math_value">3/5</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Design:</label>
+                            <input type="range" id="design_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'design_value')">
+                            <div class="range-value" id="design_value">3/5</div>
+                        </div>
+                        <div class="range-group">
+                            <label>People:</label>
+                            <input type="range" id="people_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'people_value')">
+                            <div class="range-value" id="people_value">3/5</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Science:</label>
+                            <input type="range" id="science_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'science_value')">
+                            <div class="range-value" id="science_value">3/5</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Commerce:</label>
+                            <input type="range" id="commerce_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'commerce_value')">
+                            <div class="range-value" id="commerce_value">3/5</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Gaming:</label>
+                            <input type="range" id="gaming_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'gaming_value')">
+                            <div class="range-value" id="gaming_value">3/5</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Research:</label>
+                            <input type="range" id="research_interest" min="0" max="5" value="3" oninput="updateRangeValue(this, 'research_value')">
+                            <div class="range-value" id="research_value">3/5</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>🎯 Aptitudes (0-10 scale)</h3>
+                    <div class="form-row">
+                        <div class="range-group">
+                            <label>Quantitative:</label>
+                            <input type="range" id="aptitude_quant" min="0" max="10" value="5" oninput="updateRangeValue(this, 'quant_value')">
+                            <div class="range-value" id="quant_value">5/10</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Logical:</label>
+                            <input type="range" id="aptitude_logical" min="0" max="10" value="5" oninput="updateRangeValue(this, 'logical_value')">
+                            <div class="range-value" id="logical_value">5/10</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Verbal:</label>
+                            <input type="range" id="aptitude_verbal" min="0" max="10" value="5" oninput="updateRangeValue(this, 'verbal_value')">
+                            <div class="range-value" id="verbal_value">5/10</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Creative:</label>
+                            <input type="range" id="aptitude_creative" min="0" max="10" value="5" oninput="updateRangeValue(this, 'creative_value')">
+                            <div class="range-value" id="creative_value">5/10</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Technical:</label>
+                            <input type="range" id="aptitude_technical" min="0" max="10" value="5" oninput="updateRangeValue(this, 'technical_value')">
+                            <div class="range-value" id="technical_value">5/10</div>
+                        </div>
+                        <div class="range-group">
+                            <label>Commerce:</label>
+                            <input type="range" id="aptitude_commerce" min="0" max="10" value="5" oninput="updateRangeValue(this, 'commerce_value2')">
+                            <div class="range-value" id="commerce_value2">5/10</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h3>✍️ Career Goals</h3>
+                    <div class="form-group">
+                        <label>Describe your career goals and aspirations:</label>
+                        <textarea id="goal_text" rows="4" placeholder="I want to..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Your interests (keywords):</label>
+                        <input type="text" id="interests_text" placeholder="e.g., coding, algorithms, web development">
+                    </div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button type="submit" class="btn">Get Recommendations 🚀</button>
+                </div>
+            </form>
+            
+            <div id="results" class="results"></div>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:5000';
+        
+        // Check API health on load
+        async function checkAPIHealth() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                
+                const statusDiv = document.getElementById('status');
+                if (data.status === 'healthy' && data.engine_initialized) {
+                    statusDiv.className = 'status success';
+                    statusDiv.textContent = '✅ API is healthy and ready!';
+                } else {
+                    statusDiv.className = 'status error';
+                    statusDiv.textContent = '❌ API is not properly initialized';
+                }
+            } catch (error) {
+                const statusDiv = document.getElementById('status');
+                statusDiv.className = 'status error';
+                statusDiv.textContent = '❌ Cannot connect to API. Make sure Python server is running on port 5000.';
+            }
+        }
+        
+        // Update range value display
+        function updateRangeValue(input, displayId) {
+            const value = input.value;
+            const max = input.max;
+            document.getElementById(displayId).textContent = `${value}/${max}`;
+        }
+        
+        // Load sample data
+        function loadSample(sampleId) {
+            const samples = {
+                1: { // Coding enthusiast
+                    stream: 'Science',
+                    class_level: '12th',
+                    marks_10th: 92,
+                    marks_12th: 90,
+                    coding_interest: 5,
+                    math_interest: 4,
+                    design_interest: 2,
+                    people_interest: 3,
+                    science_interest: 4,
+                    commerce_interest: 1,
+                    gaming_interest: 3,
+                    research_interest: 3,
+                    aptitude_quant: 8,
+                    aptitude_logical: 9,
+                    aptitude_verbal: 6,
+                    aptitude_creative: 5,
+                    aptitude_technical: 9,
+                    aptitude_commerce: 3,
+                    goal_text: 'I love coding and solving complex algorithmic problems. I want to work at a top tech company building scalable systems.',
+                    interests_text: 'competitive programming, web development, data structures'
+                },
+                2: { // Design focused
+                    stream: 'Science',
+                    class_level: '12th',
+                    marks_10th: 78,
+                    marks_12th: 79,
+                    coding_interest: 3,
+                    math_interest: 2,
+                    design_interest: 5,
+                    people_interest: 4,
+                    science_interest: 2,
+                    commerce_interest: 1,
+                    gaming_interest: 4,
+                    research_interest: 1,
+                    aptitude_quant: 5,
+                    aptitude_logical: 6,
+                    aptitude_verbal: 8,
+                    aptitude_creative: 9,
+                    aptitude_technical: 6,
+                    aptitude_commerce: 3,
+                    goal_text: 'I love creating beautiful user interfaces and designing apps. I want to work on products that millions use.',
+                    interests_text: 'UI design, user experience, figma, prototyping'
+                },
+                3: { // Commerce student
+                    stream: 'Commerce',
+                    class_level: '12th',
+                    marks_10th: 87,
+                    marks_12th: 89,
+                    coding_interest: 2,
+                    math_interest: 4,
+                    design_interest: 1,
+                    people_interest: 3,
+                    science_interest: 1,
+                    commerce_interest: 5,
+                    gaming_interest: 1,
+                    research_interest: 2,
+                    aptitude_quant: 9,
+                    aptitude_logical: 8,
+                    aptitude_verbal: 7,
+                    aptitude_creative: 4,
+                    aptitude_technical: 3,
+                    aptitude_commerce: 9,
+                    goal_text: 'I want to work in finance and help companies with their accounting and taxation. I dream of becoming a CA.',
+                    interests_text: 'accounting, taxation, financial analysis, auditing'
+                },
+                4: { // Gaming passion
+                    stream: 'Science',
+                    class_level: '10th',
+                    marks_10th: 74,
+                    marks_12th: 0,
+                    coding_interest: 4,
+                    math_interest: 2,
+                    design_interest: 3,
+                    people_interest: 2,
+                    science_interest: 2,
+                    commerce_interest: 1,
+                    gaming_interest: 5,
+                    research_interest: 1,
+                    aptitude_quant: 5,
+                    aptitude_logical: 7,
+                    aptitude_verbal: 6,
+                    aptitude_creative: 8,
+                    aptitude_technical: 7,
+                    aptitude_commerce: 3,
+                    goal_text: 'Though my marks are average, I love gaming and want to create games that people enjoy. I spend hours playing and analyzing games.',
+                    interests_text: 'game design, unity, storytelling, 3D graphics'
+                }
+            };
+            
+            const sample = samples[sampleId];
+            if (!sample) return;
+            
+            // Set all form values
+            Object.keys(sample).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.value = sample[key];
+                    if (element.type === 'range') {
+                        const displayId = key.replace('_interest', '_value').replace('aptitude_', '') + (key.includes('aptitude') ? '_value' : '');
+                        updateRangeValue(element, displayId);
+                    }
+                }
+            });
+        }
+        
+        // Handle form submission
+        document.getElementById('recommendationForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                stream: document.getElementById('stream').value,
+                class_level: document.getElementById('class_level').value,
+                marks_10th: parseInt(document.getElementById('marks_10th').value) || 0,
+                marks_12th: parseInt(document.getElementById('marks_12th').value) || 0,
+                coding_interest: parseInt(document.getElementById('coding_interest').value),
+                math_interest: parseInt(document.getElementById('math_interest').value),
+                design_interest: parseInt(document.getElementById('design_interest').value),
+                people_interest: parseInt(document.getElementById('people_interest').value),
+                science_interest: parseInt(document.getElementById('science_interest').value),
+                commerce_interest: parseInt(document.getElementById('commerce_interest').value),
+                gaming_interest: parseInt(document.getElementById('gaming_interest').value),
+                research_interest: parseInt(document.getElementById('research_interest').value),
+                aptitude_quant: parseInt(document.getElementById('aptitude_quant').value),
+                aptitude_logical: parseInt(document.getElementById('aptitude_logical').value),
+                aptitude_verbal: parseInt(document.getElementById('aptitude_verbal').value),
+                aptitude_creative: parseInt(document.getElementById('aptitude_creative').value),
+                aptitude_technical: parseInt(document.getElementById('aptitude_technical').value),
+                aptitude_commerce: parseInt(document.getElementById('aptitude_commerce').value),
+                goal_text: document.getElementById('goal_text').value,
+                interests: document.getElementById('interests_text').value,
+                top_k: 5
+            };
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="status loading">🔍 Getting recommendations...</div>';
+            
+            try {
+                const response = await fetch(`${API_URL}/api/recommend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    displayResults(data);
+                } else {
+                    resultsDiv.innerHTML = `<div class="status error">❌ Error: ${data.error || 'Unknown error'}</div>`;
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            }
+        });
+        
+        // Display results
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = '<h2 style="margin-bottom: 20px;">📊 Your Career Recommendations</h2>';
+            
+            data.recommendations.forEach((rec, index) => {
+                html += `
+                    <div class="career-card">
+                        <div class="career-header">
+                            <div class="career-title">${index + 1}. ${rec.title}</div>
+                            <div class="career-score">${rec.total_score.toFixed(2)}/10</div>
+                        </div>
+                        <div class="career-description">${rec.description}</div>
+                        <div class="score-breakdown">
+                            <div class="score-item">
+                                <div class="score-label">Similarity</div>
+                                <div class="score-value">${rec.similarity_score.toFixed(1)}/10</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-label">Aptitude Match</div>
+                                <div class="score-value">${rec.aptitude_score.toFixed(1)}/10</div>
+                            </div>
+                            <div class="score-item">
+                                <div class="score-label">Interest Match</div>
+                                <div class="score-value">${rec.interest_score.toFixed(1)}/10</div>
+                            </div>
+                        </div>
+                        <div class="explanation">${rec.explanation}</div>
+                    </div>
+                `;
+            });
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        // Check API health on load
+        checkAPIHealth();
+    </script>
+</body>
+</html>
