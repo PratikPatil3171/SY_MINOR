@@ -1,0 +1,41 @@
+student_id,stream,class_level,marks_10th,marks_12th,maths_pct,science_pct,commerce_pct,english_pct,cs_it_pct,interests,aptitude_quant,aptitude_logical,aptitude_verbal,aptitude_creative,aptitude_technical,aptitude_commerce,dream_text,best_career_id,best_career_title
+S001,Science,12th,92,90,95,93,,88,94,"coding, problem solving, competitive programming, tech videos",95,94,80,60,96,50,"I want to work at a top tech company building scalable software used by millions.",C001,Software Developer
+S002,Science,12th,89,88,92,90,,85,90,"web design, UI, front-end, freelancing",88,86,82,92,85,45,"I dream of creating beautiful and fast websites for startups and my own agency.",C002,Web Developer
+S003,Science,12th,95,94,98,96,,90,97,"math puzzles, data, statistics, research",97,95,83,70,90,55,"I want to use data to solve real world business and social problems.",C003,Data Scientist
+S004,Science,12th,90,91,96,92,,86,93,"AI, neural networks, math, Kaggle",96,94,78,65,97,40,"I want to build intelligent systems that learn from data and power new products.",C004,Machine Learning Engineer
+S005,Science,12th,85,84,88,86,,80,82,"ethical hacking, networking, cybersecurity blogs",88,92,75,60,90,50,"My dream is to defend organizations from hackers and cyber threats.",C005,Cybersecurity Analyst
+S006,Science,12th,82,81,86,83,,78,80,"cloud, DevOps, automation, Linux tinkering",87,85,72,65,92,55,"I want to manage cloud infrastructure and automate deployments for big products.",C006,Cloud Engineer
+S007,Science,12th,80,78,84,80,,75,78,"Linux, scripting, CI/CD, infra",86,88,70,62,90,52,"I want to streamline deployments and make development faster using automation.",C007,DevOps Engineer
+S008,Science,12th,87,86,90,88,,82,89,"mobile apps, Android, UX, startups",88,84,79,85,89,48,"My dream is to build mobile apps that simplify daily life for students.",C008,Mobile App Developer
+S009,Science,12th,83,82,88,85,,78,80,"gaming, graphics, storytelling",84,82,76,92,87,40,"I want to create immersive games with strong stories and fun mechanics.",C009,Game Developer
+S010,Science,12th,78,79,80,78,,75,77,"design, UI, UX, user psychology",75,78,88,95,74,45,"I dream of designing interfaces that feel simple and delightful to use.",C010,UI/UX Designer
+S011,Science,12th,88,87,90,92,,81,79,"electronics, circuits, Arduino, robotics club",86,84,70,60,88,42,"I want to design and improve electronic systems used in everyday devices.",C011,Electronics Engineer
+S012,Science,12th,81,83,84,86,,77,76,"machines, power, large systems",82,80,72,60,85,40,"I see myself working on power systems and electrical infrastructure.",C012,Electrical Engineer
+S013,Science,12th,79,80,82,81,,74,75,"cars, engines, mechanics, physics",80,79,70,65,84,38,"I want to design better engines and mechanical systems for vehicles.",C013,Mechanical Engineer
+S014,Science,12th,76,77,80,79,,70,74,"construction, buildings, site work",78,77,68,62,80,35,"I dream of designing safe and modern structures like bridges and towers.",C014,Civil Engineer
+S015,Science,12th,91,90,95,92,,84,88,"robots, sensors, automation, competitions",93,95,76,70,95,45,"I want to build robots that can assist humans in factories and homes.",C015,Robotics Engineer
+S016,Science,12th,96,95,99,97,,90,94,"math, algorithms, research papers",98,97,85,70,93,40,"I dream of working in a lab researching new AI algorithms.",C016,AI Researcher
+S017,Science,12th,93,94,90,95,,88,89,"biology, hospital volunteering, empathy",82,84,88,70,75,35,"I want to become a doctor and serve patients in rural areas.",C017,Doctor (MBBS)
+S018,Science,12th,88,87,86,90,,80,83,"biology, electronics, medical tech",84,82,78,68,86,40,"My dream is to design advanced medical machines that save lives.",C018,Biomedical Engineer
+S019,Science,12th,86,85,82,88,,78,80,"pharmacy, chemistry, healthcare",80,78,76,60,72,38,"I want to guide patients with proper medicine usage as a professional pharmacist.",C019,Pharmacist
+S020,Science,12th,84,83,80,89,,76,79,"lab work, biology, research, environment",79,80,75,70,78,36,"I dream of working in a biotech lab creating solutions for health and agriculture.",C020,Biotechnologist
+S021,Science,10th,91,,94,92,,88,90,"maths, data, spreadsheets, charts",93,90,80,65,82,60,"I want a career where I can analyze numbers and help businesses make decisions.",C021,Data Analyst
+S022,Science,10th,88,,92,89,,84,86,"systems thinking, business, technology",90,88,82,70,84,65,"I wish to connect business needs with tech solutions and improve processes.",C022,Business Analyst
+S023,Commerce,12th,87,89,82,,90,88,75,"accounts, taxation, law, finance",82,84,78,60,70,94,"I dream of becoming a top chartered accountant and starting my own firm.",C023,Chartered Accountant (CA)
+S024,Commerce,12th,85,86,80,,88,86,73,"costing, budgeting, planning",80,82,76,62,68,92,"I want to help companies control costs and improve profitability.",C024,Cost and Management Accountant
+S025,Commerce,12th,83,84,78,,86,85,74,"law, documentation, compliance",76,78,80,64,65,90,"I see myself handling legal compliance and corporate governance.",C025,Company Secretary (CS)
+S026,Commerce,12th,90,91,88,,92,90,80,"stock markets, deals, corporate finance",90,88,82,70,78,96,"I want to work on big financial deals and IPOs in investment banking.",C026,Investment Banker
+S027,Commerce,12th,88,87,86,,89,87,78,"equity research, reports, Excel",86,84,80,65,72,93,"I dream of analyzing companies and giving stock recommendations.",C030,Stock Market Research Analyst
+S028,Commerce,12th,82,83,80,,84,82,76,"balance sheets, audit, details",78,80,76,60,68,90,"I want to verify financial records and ensure accuracy for businesses.",C029,Auditor
+S029,Commerce,12th,80,81,78,,82,80,74,"tax rules, numbers, laws",76,78,75,58,66,92,"I see myself helping people and firms plan and file their taxes correctly.",C028,Tax Consultant
+S030,Commerce,12th,79,78,76,,80,79,72,"banking, stability, government job",74,76,78,55,64,88,"My dream is to work as an officer in a reputed bank.",C039,Bank Probationary Officer
+S031,Commerce,12th,76,77,74,,78,76,70,"marketing, social media, branding",70,72,82,88,60,80,"I want to create campaigns that make brands popular online.",C033,Digital Marketing Specialist
+S032,Commerce,12th,78,79,75,,80,78,71,"people skills, hiring, communication",72,74,84,82,58,78,"I dream of working in HR, building strong teams and work cultures.",C034,Human Resource (HR) Manager
+S033,Commerce,10th,82,,84,,80,79,74,"business, entrepreneurship, leadership",80,78,82,85,72,82,"I want to start my own company and create jobs for others.",C031,Entrepreneur/Startup Founder
+S034,Commerce,10th,88,,90,,86,85,78,"economics, policies, budgets",86,84,80,70,68,90,"I see myself researching economic trends and advising on policies.",C035,Economist
+S035,Commerce,10th,81,,82,,80,79,72,"strategy, consulting, presentations",82,84,78,74,70,85,"I want to advise companies on improving their business performance.",C036,Management Consultant
+S036,Commerce,10th,79,,78,,77,76,70,"operations, logistics, planning",78,80,74,68,69,86,"I dream of optimizing supply chains so goods move faster and cheaper.",C038,Supply Chain Analyst
+S037,Science,10th,74,,70,72,,73,68,"average marks, loves coding, gaming",78,82,70,80,85,50,"Though my marks are average, I want to build games and apps people enjoy.",C009,Game Developer
+S038,Science,10th,69,,64,66,,70,60,"drawing, app UI, aesthetics",60,65,78,92,68,45,"I am more interested in design than theory and want to design app interfaces.",C010,UI/UX Designer
+S039,Commerce,10th,67,,60,,70,72,65,"sales, talking to people, networking",65,68,80,78,62,82,"I want a role where I meet clients, close deals and grow business.",C040,Business Developer (Sales & Partnerships)
+S040,Science,10th,71,,72,73,,68,70,"biology, healthcare, empathy",66,70,78,65,60,50,"I want to be close to healthcare but also work with technology and devices.",C018,Biomedical Engineer

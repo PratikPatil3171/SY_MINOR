@@ -5,7 +5,8 @@
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
-    "dev": "node src/server.js"
+    "dev": "node src/server.js",
+    "migrate": "node migrate.js"
   },
   "keywords": [
     "career",
@@ -18,6 +19,9 @@
   "dependencies": {
     "express": "^4.18.2",
     "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "node-fetch": "^2.6.7",
+    "mongoose": "^7.0.3",
+    "dotenv": "^16.0.3"
   }
 }

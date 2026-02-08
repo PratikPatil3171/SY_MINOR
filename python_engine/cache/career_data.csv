@@ -1,0 +1,41 @@
+career_id,title,description,required_skills,suitable_interests,education_path,stream_tag
+C001,Software Developer,"Builds and maintains software applications used on web, mobile, or desktops.","Programming, DSA, OOP, Problem Solving, Git","coding, building apps, logic puzzles, tech",10th → 11-12th Science (PCM/PCMB) or Commerce with Maths → B.Tech/B.Sc CS/IT → internships → SDE role,Both
+C002,Web Developer,Creates and maintains websites and web applications.,"HTML, CSS, JavaScript, React, Node.js, Databases","designing websites, coding, creativity, UI",10th → 11-12th Science or Commerce → BCA/B.Sc CS/B.Tech IT → web dev projects → web developer,Both
+C003,Data Scientist,Analyzes data to extract insights and build predictive models.,"Python, Statistics, Machine Learning, SQL","maths, data, patterns, research",10th → 11-12th Science (PCM) or Commerce with Maths → B.Tech/B.Sc Stats → data scientist,Both
+C004,Machine Learning Engineer,Builds and deploys ML models.,"Python, ML, TensorFlow/PyTorch, DSA","AI, automation, maths, coding",10th → 11-12th Science (PCM) → B.Tech CSE/AI-ML → ML engineer,Science
+C005,Cybersecurity Analyst,Protects systems and networks from cyber attacks.,"Networking, Linux, Security Tools","ethical hacking, puzzles, investigation",10th → 11-12th Science (PCM) → B.Tech CSE/IT → cybersecurity analyst,Science
+C006,Cloud Engineer,Designs cloud infrastructure.,"Cloud Platforms, Linux, Networking","automation, servers, DevOps",10th → 11-12th Science (PCM) → B.Tech CSE/IT → cloud engineer,Science
+C007,DevOps Engineer,Automates development & deployment pipelines.,"CI/CD, Docker, Kubernetes, Linux","automation, system management",10th → 11-12th Science (PCM) → B.Tech CSE/IT → DevOps engineer,Science
+C008,Mobile App Developer,Builds Android/iOS mobile applications.,"Java/Kotlin, Flutter, React Native","apps, design, coding",10th → 11-12th Science or Commerce → BCA/B.Tech → mobile dev,Both
+C009,Game Developer,Creates computer and mobile games.,"C++, C#, Unity, Unreal Engine","gaming, graphics, coding",10th → 11-12th Science (PCM) → B.Tech CS/Game Dev → game developer,Science
+C010,UI/UX Designer,Designs user interfaces and experiences.,"Figma, Prototyping, UX Research","creativity, design, psychology",10th → 11-12th Science or Commerce → B.Des/Design course → UI/UX designer,Both
+C011,Electronics Engineer,Works with electronic circuits & devices.,"Circuit Design, Microcontrollers","gadgets, circuits, hardware",10th → 11-12th Science (PCM) → B.Tech ECE/EEE → electronics engineer,Science
+C012,Electrical Engineer,Designs and maintains electrical systems.,"Power Systems, MATLAB, Circuits","machines, electricity",10th → 11-12th Science (PCM) → B.Tech Electrical Engg,Science
+C013,Mechanical Engineer,Designs and analyzes mechanical systems.,"CAD, Mechanics, Thermodynamics","machines, vehicles, physics",10th → 11-12th Science (PCM) → B.Tech Mechanical,Science
+C014,Civil Engineer,Designs infrastructure like buildings & roads.,"AutoCAD, Surveying, Planning","construction, structures, field work",10th → 11-12th Science (PCM) → B.Tech Civil Engg,Science
+C015,Robotics Engineer,Builds robots and automation systems.,"C/C++, Robotics, Sensors","robots, automation",10th → 11-12th Science (PCM) → B.Tech Robotics/Mechatronics,Science
+C016,AI Researcher,Works on advanced AI and research.,"Deep Learning, Math, Python","research, maths, AI",10th → 11-12th Science → B.Tech/B.Sc → M.Tech/PhD → AI researcher,Science
+C017,Doctor (MBBS),Diagnoses and treats patients.,"Biology, Chemistry, Empathy","healthcare, biology, service",10th → 11-12th Science (PCB) → NEET → MBBS,Science
+C018,Biomedical Engineer,Builds medical devices & healthcare technology.,"Medical Instrumentation, Electronics","healthcare tech, machines",10th → 11-12th Science (PCM/PCB) → B.Tech Biomedical Engg,Science
+C019,Pharmacist,Works with medicines and pharma operations.,"Chemistry, Pharmacology","medicines, patient care",10th → 11-12th Science (PCB) → B.Pharm,Science
+C020,Biotechnologist,"Uses biology for healthcare, agriculture & industry.","Lab skills, Molecular Biology","research, biology",10th → 11-12th Science (PCB/PCMB) → B.Sc/B.Tech Biotech,Science
+C021,Data Analyst,Analyzes business and operational data.,"Excel, SQL, Python, BI Tools","numbers, dashboards, logic",10th → 11-12th Science or Commerce → B.Sc/B.Com/BBA → data analyst,Both
+C022,Business Analyst,Bridges business systems and tech.,"SQL, Documentation, Communication","business, processes",10th → 11-12th Science or Commerce → BBA/B.Com/B.Tech,Both
+C023,Chartered Accountant (CA),"Handles auditing, taxation & accounting.","Accounting, Taxation, Law","numbers, finance, accuracy",10th → 11-12th Commerce → CA Foundation → CA,Commerce
+C024,Cost & Management Accountant,Handles budgeting and cost planning.,"Cost Accounting, Finance","strategy, costing, finance",10th → 11-12th Commerce → CMA,Commerce
+C025,Company Secretary (CS),Ensures legal & regulatory compliance.,"Corporate Law, Drafting","rules, law, documentation",10th → 11-12th Commerce → CS Executive & Professional,Commerce
+C026,Investment Banker,"Manages mergers, acquisitions & capital raising.","Financial Modeling, Valuation","markets, finance, high pressure",10th → 11-12th Commerce → BBA/B.Com → MBA Finance,Commerce
+C027,Financial Analyst,Evaluates financial data & reports.,"Excel, Financial Modeling","markets, numbers, reports",10th → 11-12th Commerce or Science with Maths → B.Com/BBA,Both
+C028,Tax Consultant,"Files taxes, guides tax planning.","Tax Laws, Accounting","rules, analysis, finance",10th → 11-12th Commerce → B.Com/CA/LLB,Commerce
+C029,Auditor,Verifies accuracy of financial records.,"Auditing, Accounting","checking details, finance",10th → 11-12th Commerce → B.Com → Audit Firm,Commerce
+C030,Stock Market Research Analyst,Analyzes companies & stock trends.,"Technical Analysis, Excel","markets, finance, risk",10th → 11-12th Commerce → NISM → Research Analyst,Commerce
+C031,Entrepreneur,Starts and runs a business.,"Business Planning, Leadership","ideas, innovation, leadership",10th → 11-12th Science or Commerce → Any UG → startup,Both
+C032,Marketing Manager,Manages marketing campaigns & branding.,"Marketing, Creativity, Analytics","branding, creativity",10th → 11-12th Commerce or Science → BBA/MBA,Both
+C033,Digital Marketer,Handles online branding & ads.,"SEO, Social Media, Analytics","content, branding, trends",10th → 11-12th Commerce or Science → Any UG → Digital Marketing,Both
+C034,HR Manager,"Manages hiring, payroll & employee relations.","Communication, Empathy","people, communication",10th → 11-12th Commerce or Science → BBA/MBA-HR,Both
+C035,Economist,Studies economic trends & policies.,"Econometrics, Statistics","research, policies",10th → 11-12th Commerce with Maths → Economics UG → Masters,Commerce
+C036,Management Consultant,Advises companies on strategy & operations.,"Problem Solving, Analytics","business, analysis",10th → 11-12th Commerce or Science → BBA/B.Tech → MBA,Both
+C037,Operations Manager,Manages business operations & processes.,"Planning, Coordination","management, optimization",10th → 11-12th Commerce or Science → BBA/B.Com/B.Tech,Both
+C038,Supply Chain Analyst,"Manages logistics, inventory & transport.","Logistics, Data Analysis","planning, numbers",10th → 11-12th Commerce or Science → BBA Logistics/B.Tech Industrial Engg,Both
+C039,Bank PO,Handles banking operations & services.,"Quantitative Aptitude, Banking","finance, stability",10th → 11-12th Commerce or Science → Any UG → Bank PO Exam,Both
+C040,Business Developer,Grows business through partnerships.,"Communication, CRM, Negotiation","networking, sales",10th → 11-12th Commerce or Science → BBA/B.Com → Sales/BD,Both

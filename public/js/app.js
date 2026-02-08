@@ -53,6 +53,13 @@ const submitSectionBtn = document.getElementById("submit-section-btn");
 const closeResultsBtn = document.getElementById("close-results-btn");
 const resultsContent = document.getElementById("results-content");
 
+// Recommendations elements
+const recommendationsScreen = document.getElementById("recommendations-screen");
+const recommendationsContent = document.getElementById("recommendations-content");
+const recommendationsLoading = document.getElementById("recommendations-loading");
+const viewRecommendationsBtn = document.getElementById("view-recommendations-btn");
+const closeRecommendationsBtn = document.getElementById("close-recommendations-btn");
+
 const APTITUDE_SCORES_KEY = "careerAdvisor_aptitudeScores";
 
 // Test state
@@ -87,6 +94,7 @@ function setSession(email) {
 
 function clearSession() {
   localStorage.removeItem(SESSION_KEY);
+  localStorage.removeItem(USER_KEY);
 }
 
 function getSession() {
@@ -156,6 +164,217 @@ function closeResultsScreen() {
   if (!aptitudeResultsScreen) return;
   aptitudeResultsScreen.classList.add("hidden");
   document.body.style.overflow = "";
+}
+
+function openRecommendationsScreen() {
+  if (!recommendationsScreen) return;
+  aptitudeResultsScreen.classList.add("hidden");
+  recommendationsScreen.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
+function closeRecommendationsScreen() {
+  if (!recommendationsScreen) return;
+  recommendationsScreen.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+async function fetchRecommendations() {
+  const user = getStoredUser();
+  const scores = getStoredScores();
+  
+  if (!user) {
+    alert("Please log in first.");
+    return;
+  }
+  
+  if (!scores || !scores.testTakenAt) {
+    alert("Please complete the aptitude test first to get career recommendations.");
+    return;
+  }
+
+  // Check if average score is above 4
+  const quantScore = scores.quantitative ?? 0;
+  const logicScore = scores.logical ?? 0;
+  const verbalScore = scores.verbal ?? 0;
+  const average = (quantScore + logicScore + verbalScore) / 3;
+  
+  if (average <= 4) {
+    alert("Your average score is " + average.toFixed(2) + ". Please score marks above 4 to view recommendations. You can attempt the test again to improve your score.");
+    return;
+  }
+
+  // Show loading state
+  openRecommendationsScreen();
+  if (recommendationsLoading) recommendationsLoading.classList.remove("hidden");
+  if (recommendationsContent) recommendationsContent.innerHTML = "";
+
+  try {
+    // Prepare student data for recommendation engine
+    const studentData = {
+      email: user.email,
+      name: user.fullName,
+      stream: user.stream,
+      classLevel: user.currentClass,
+      marks10th: parseFloat(user.tenthPercentage) || null,
+      marks12th: parseFloat(user.twelfthPercentage) || null,
+      cgpaSem: user.cgpaSem || null,
+      
+      // Subject interests (1-5 ratings)
+      interests: {
+        coding: user.ratings?.codingInterest || 0,
+        design: user.ratings?.designInterest || 0,
+        math: user.ratings?.mathsInterest || 0,
+        science: user.ratings?.scienceInterest || 0,
+        business: user.ratings?.commerceInterest || 0,
+        people: user.ratings?.peopleInterest || 0,
+      },
+      
+      // Aptitude test scores (0-10)
+      aptitude: {
+        quantitative: scores.quantitative || 0,
+        logical: scores.logical || 0,
+        verbal: scores.verbal || 0,
+      },
+      
+      // Skills and preferences
+      skills: user.skills || [],
+      careerDomains: user.careerDomains || [],
+      higherStudies: user.higherStudies,
+      entranceExams: user.entranceExams || [],
+      workEnvironment: user.workEnvironment,
+      workStyles: user.workStyles || [],
+      financialConstraints: user.financialConstraints,
+      locationRestrictions: user.locationRestrictions,
+      dreamCareer: user.dreamCareer || "",
+    };
+
+    console.log("Fetching recommendations with data:", studentData);
+
+    const res = await fetch(`${API_BASE}/recommendations`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(studentData),
+    });
+
+    const data = await res.json();
+
+    if (recommendationsLoading) recommendationsLoading.classList.add("hidden");
+
+    console.log("Received recommendations response:", data);
+
+    // Check for both 'ok' and 'success' fields (server returns 'ok', Python returns 'success')
+    const isSuccess = data.ok || data.success;
+    
+    if (!isSuccess || !data.recommendations || data.recommendations.length === 0) {
+      recommendationsContent.innerHTML = `
+        <div class="error-message">
+          <h3>⚠️ Unable to Generate Recommendations</h3>
+          <p>${data.message || data.error || "The recommendation service is currently unavailable. Please ensure the Python recommendation engine is running on port 5000."}</p>
+          <p>To start the recommendation engine:</p>
+          <ol>
+            <li>Open a terminal in the <code>python_engine</code> folder</li>
+            <li>Run: <code>python app.py</code></li>
+            <li>Wait for "API Server ready" message</li>
+            <li>Try generating recommendations again</li>
+          </ol>
+        </div>
+      `;
+      return;
+    }
+
+    renderRecommendations(data.recommendations);
+  } catch (err) {
+    console.error("Error fetching recommendations:", err);
+    if (recommendationsLoading) recommendationsLoading.classList.add("hidden");
+    
+    recommendationsContent.innerHTML = `
+      <div class="error-message">
+        <h3>⚠️ Connection Error</h3>
+        <p>Could not connect to the recommendation service.</p>
+        <p>Please make sure:</p>
+        <ol>
+          <li>The Python recommendation engine is running on port 5000</li>
+          <li>Navigate to <code>python_engine</code> folder</li>
+          <li>Run: <code>python app.py</code></li>
+          <li>Wait for the server to start</li>
+        </ol>
+      </div>
+    `;
+  }
+}
+
+function renderRecommendations(recommendations) {
+  if (!recommendationsContent) return;
+  
+  if (!recommendations || recommendations.length === 0) {
+    recommendationsContent.innerHTML = `
+      <div class="no-results">
+        <h3>No Recommendations Found</h3>
+        <p>We couldn't find suitable career recommendations based on your profile. Please update your profile with more details.</p>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '<div class="recommendations-list">';
+  
+  recommendations.forEach((career, index) => {
+    const rank = index + 1;
+    // The Python engine returns 'total_score' out of 10
+    const matchScore = Math.round((career.total_score || career.score || 0) * 10);
+    
+    // Get the explanation object
+    const explanation = career.explanation || {};
+    const matchStrength = explanation.match_strength || 'Good Match';
+    const summary = explanation.summary || '';
+    const keyReasons = explanation.key_reasons || [];
+    
+    html += `
+      <div class="recommendation-card">
+        <div class="recommendation-header">
+          <div class="recommendation-rank">#${rank}</div>
+          <div class="recommendation-title">
+            <h3>${career.title || 'Career Option'}</h3>
+            <div class="match-score">
+              <div class="match-bar">
+                <div class="match-fill" style="width: ${matchScore}%"></div>
+              </div>
+              <span>${matchScore}% Match - ${matchStrength}</span>
+            </div>
+          </div>
+        </div>
+        <div class="recommendation-body">
+          ${career.description ? `<p class="career-description">${career.description}</p>` : ''}
+          
+          ${career.domain ? `<p><strong>Domain:</strong> ${career.domain}</p>` : ''}
+          
+          ${career.education_path ? `<p><strong>Education Path:</strong> ${career.education_path}</p>` : ''}
+          
+          ${career.required_skills ? `
+            <p><strong>Key Skills:</strong> ${Array.isArray(career.required_skills) ? career.required_skills.join(', ') : career.required_skills}</p>
+          ` : ''}
+          
+          ${career.avg_salary ? `<p><strong>Average Salary:</strong> ${career.avg_salary}</p>` : ''}
+          
+          ${summary ? `
+            <div class="recommendation-explanation">
+              <strong>Why this matches you:</strong>
+              <p>${summary}</p>
+              ${keyReasons.length > 0 ? `
+                <ul>
+                  ${keyReasons.map(reason => `<li>${reason}</li>`).join('')}
+                </ul>
+              ` : ''}
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  });
+  
+  html += '</div>';
+  recommendationsContent.innerHTML = html;
 }
 
 function updateAuthBanner() {
@@ -271,21 +490,57 @@ function buildStudentSummary(user) {
 }
 
 function getStoredScores() {
-  try {
-    const raw = localStorage.getItem(APTITUDE_SCORES_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
+  // Get scores from the current user object instead of localStorage
+  const user = getStoredUser();
+  return user && user.aptitudeScores ? user.aptitudeScores : null;
 }
 
-function saveScores(scores) {
-  localStorage.setItem(APTITUDE_SCORES_KEY, JSON.stringify(scores));
+async function saveScores(scores) {
+  // Save scores to database via API
+  const user = getStoredUser();
+  if (!user || !user.email) {
+    console.error('No user logged in');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/submit-scores`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: user.email, scores })
+    });
+
+    const data = await res.json();
+    if (data.ok) {
+      // Update local user object with new scores
+      user.aptitudeScores = data.scores;
+      saveUser(user);
+      console.log('✅ Scores saved to database');
+    } else {
+      console.error('Failed to save scores:', data.message);
+    }
+  } catch (error) {
+    console.error('Error saving scores:', error);
+  }
 }
 
 function renderScores() {
   const scores = getStoredScores();
-  if (!scores) return;
+  if (!scores || !scores.testTakenAt) {
+    // No test taken yet - show placeholder
+    if (quantitativeScoreEl) {
+      quantitativeScoreEl.textContent = '-- / 10';
+    }
+    if (logicalScoreEl) {
+      logicalScoreEl.textContent = '-- / 10';
+    }
+    if (verbalScoreEl) {
+      verbalScoreEl.textContent = '-- / 10';
+    }
+    return;
+  }
+  
+  // Display actual scores
   if (quantitativeScoreEl) {
     quantitativeScoreEl.textContent = `${scores.quantitative ?? 0} / 10`;
   }
@@ -615,7 +870,22 @@ function calculateAndShowResults() {
     scores[section.key] = correct; // 1 mark per question, max 10
   });
 
+  // Update local user object immediately for instant UI update
+  const user = getStoredUser();
+  if (user) {
+    user.aptitudeScores = {
+      quantitative: scores.quantitative,
+      logical: scores.logical,
+      verbal: scores.verbal,
+      testTakenAt: new Date().toISOString()
+    };
+    saveUser(user);
+  }
+
+  // Save to database in background
   saveScores(scores);
+  
+  // Show results immediately with updated local data
   renderScores();
   closeAptitudeTest();
   openResultsScreen();
@@ -624,14 +894,33 @@ function calculateAndShowResults() {
 function renderResults() {
   if (!resultsContent) return;
   const scores = getStoredScores();
-  if (!scores) return;
+  
+  if (!scores || !scores.testTakenAt) {
+    resultsContent.innerHTML = `
+      <div class="result-section">
+        <h3>No Test Taken</h3>
+        <p>You haven't taken the aptitude test yet. Please complete the test first.</p>
+      </div>
+    `;
+    return;
+  }
   
   const quantScore = scores.quantitative ?? 0;
   const logicScore = scores.logical ?? 0;
   const verbalScore = scores.verbal ?? 0;
   const average = ((quantScore + logicScore + verbalScore) / 3).toFixed(2);
   
+  // Check if average is too low for recommendations
+  const lowScore = parseFloat(average) <= 4;
+  const warningMessage = lowScore ? `
+    <div class="result-warning" style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
+      <h4 style="color: #856404; margin: 0 0 10px 0;">⚠️ Score Too Low for Recommendations</h4>
+      <p style="color: #856404; margin: 0;">Your average score is ${average} out of 10. You need to score above 4 to access career recommendations. Please attempt the test again to improve your score.</p>
+    </div>
+  ` : '';
+  
   resultsContent.innerHTML = `
+    ${warningMessage}
     <div class="result-section">
       <h3>Quantitative Aptitude</h3>
       <div class="result-score">${quantScore} / 10</div>
@@ -651,6 +940,7 @@ function renderResults() {
       <h3>Average Score</h3>
       <div class="result-score">${average} / 10</div>
       <p>Your overall aptitude average across all sections.</p>
+      <p class="test-date">Test taken: ${new Date(scores.testTakenAt).toLocaleDateString()}</p>
     </div>
   `;
 }
@@ -674,6 +964,7 @@ async function handleLoginSubmit(e) {
       setSession(user.email);
       updateAuthBanner();
       buildStudentSummary(user);
+      renderScores();
       closeAuthModal();
       showAptitudeSection();
       return;
@@ -689,6 +980,7 @@ async function handleLoginSubmit(e) {
       setSession(email);
       updateAuthBanner();
       buildStudentSummary(localUser);
+      renderScores();
       closeAuthModal();
       showAptitudeSection();
       return;
@@ -707,6 +999,7 @@ async function handleLoginSubmit(e) {
       setSession(email);
       updateAuthBanner();
       buildStudentSummary(localUser);
+      renderScores();
       closeAuthModal();
       showAptitudeSection();
       return;
@@ -791,6 +1084,7 @@ async function handleSignupSubmit(e) {
     setSession(user.email);
     updateAuthBanner();
     buildStudentSummary(user);
+    renderScores();
     alert("Profile saved and account created successfully!");
     closeAuthModal();
     showAptitudeSection();
@@ -852,6 +1146,7 @@ function initNavigationGuards() {
 function initLogout() {
   logoutBtn.addEventListener("click", () => {
     clearSession();
+    clearUserUI();
     updateAuthBanner();
     closeAuthModal();
   });
@@ -859,9 +1154,38 @@ function initLogout() {
   if (navLogoutBtn) {
     navLogoutBtn.addEventListener("click", () => {
       clearSession();
+      clearUserUI();
       updateAuthBanner();
       closeAuthModal();
     });
+  }
+}
+
+function clearUserUI() {
+  // Clear student summary
+  if (studentSummary) {
+    studentSummary.innerHTML = '';
+  }
+  
+  // Reset aptitude scores to placeholder
+  if (quantitativeScoreEl) {
+    quantitativeScoreEl.textContent = '-- / 10';
+  }
+  if (logicalScoreEl) {
+    logicalScoreEl.textContent = '-- / 10';
+  }
+  if (verbalScoreEl) {
+    verbalScoreEl.textContent = '-- / 10';
+  }
+  
+  // Clear login form fields for security
+  const loginEmailField = document.getElementById("login-email");
+  const loginPasswordField = document.getElementById("login-password");
+  if (loginEmailField) {
+    loginEmailField.value = '';
+  }
+  if (loginPasswordField) {
+    loginPasswordField.value = '';
   }
 }
 
@@ -905,6 +1229,18 @@ function initAptitudeTest() {
   if (closeResultsBtn) {
     closeResultsBtn.addEventListener("click", () => {
       closeResultsScreen();
+    });
+  }
+
+  if (viewRecommendationsBtn) {
+    viewRecommendationsBtn.addEventListener("click", () => {
+      fetchRecommendations();
+    });
+  }
+
+  if (closeRecommendationsBtn) {
+    closeRecommendationsBtn.addEventListener("click", () => {
+      closeRecommendationsScreen();
     });
   }
 }

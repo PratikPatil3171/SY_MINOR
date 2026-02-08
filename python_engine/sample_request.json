@@ -1,0 +1,31 @@
+{
+  "email": "test.student@example.com",
+  "name": "Test Student",
+  "stream": "Science",
+  "classLevel": "12th",
+  "marks10th": 92,
+  "marks12th": 90,
+  "mathsPercent": 95,
+  "sciencePercent": 93,
+  "commercePercent": null,
+  "englishPercent": 88,
+  "csItPercent": 94,
+  "interests": {
+    "coding": 5,
+    "design": 2,
+    "math": 5,
+    "science": 4,
+    "business": 2,
+    "people": 2,
+    "creative": 3
+  },
+  "aptitude": {
+    "quantitative": 9.5,
+    "logical": 9.4,
+    "verbal": 8.0,
+    "creative": 6.0,
+    "technical": 9.6,
+    "commerce": 5.0
+  },
+  "dreamText": "I want to work at a top tech company building scalable software used by millions. I love coding, problem solving, and competitive programming."
+}

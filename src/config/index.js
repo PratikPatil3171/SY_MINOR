@@ -1,4 +1,4 @@
-// Configuration settings for the application
+
 module.exports = {
   // Server configuration
   server: {
@@ -6,9 +6,9 @@ module.exports = {
     env: process.env.NODE_ENV || 'development'
   },
 
-  // Database configuration
+  // MongoDB Atlas configuration
   database: {
-    path: './data/database.json'
+    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/career_advisor'
   },
 
   // API configuration
@@ -22,7 +22,7 @@ module.exports = {
     origin: process.env.CORS_ORIGIN || '*'
   },
 
-  // Authentication configuration
+  
   auth: {
     saltRounds: 10,
     sessionKey: 'careerAdvisor_sessionEmail',

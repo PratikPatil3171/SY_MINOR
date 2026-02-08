@@ -1,0 +1,286 @@
+{
+  "test_date": "2026-02-07T23:14:07.606816",
+  "total_tests": 5,
+  "successful_tests": 5,
+  "failed_tests": 0,
+  "results": [
+    {
+      "user": "User 1: CS Engineering Student",
+      "status": "SUCCESS",
+      "top_5_careers": [
+        "Game Developer",
+        "Robotics Engineer",
+        "Data Scientist",
+        "AI Researcher",
+        "Machine Learning Engineer"
+      ],
+      "total_recommendations": 10,
+      "profile": {
+        "email": "test1@example.com",
+        "name": "Rahul Sharma",
+        "stream": "Science",
+        "classLevel": "12th",
+        "marks10th": 92,
+        "marks12th": 88,
+        "cgpaSem": null,
+        "interests": {
+          "coding": 5,
+          "design": 2,
+          "math": 5,
+          "science": 4,
+          "business": 1,
+          "people": 2
+        },
+        "aptitude": {
+          "quantitative": 9,
+          "logical": 8,
+          "verbal": 6
+        },
+        "skills": [
+          "Python",
+          "Java",
+          "Problem Solving",
+          "Data Structures"
+        ],
+        "careerDomains": [
+          "Technology",
+          "Engineering"
+        ],
+        "higherStudies": "Yes",
+        "entranceExams": [
+          "JEE",
+          "BITSAT"
+        ],
+        "workEnvironment": "Office/Lab",
+        "workStyles": [
+          "Independent",
+          "Technical"
+        ],
+        "financialConstraints": "Medium",
+        "locationRestrictions": "None",
+        "dreamCareer": "I want to become a software engineer and work on AI/ML projects"
+      }
+    },
+    {
+      "user": "User 2: Medical Aspirant",
+      "status": "SUCCESS",
+      "top_5_careers": [
+        "Biotechnologist",
+        "AI Researcher",
+        "Data Scientist",
+        "Robotics Engineer",
+        "Game Developer"
+      ],
+      "total_recommendations": 10,
+      "profile": {
+        "email": "test2@example.com",
+        "name": "Priya Patel",
+        "stream": "Science",
+        "classLevel": "12th",
+        "marks10th": 94,
+        "marks12th": 91,
+        "cgpaSem": null,
+        "interests": {
+          "coding": 1,
+          "design": 2,
+          "math": 3,
+          "science": 5,
+          "business": 1,
+          "people": 5
+        },
+        "aptitude": {
+          "quantitative": 7,
+          "logical": 7,
+          "verbal": 8
+        },
+        "skills": [
+          "Biology",
+          "Chemistry",
+          "Patient Care",
+          "Communication"
+        ],
+        "careerDomains": [
+          "Healthcare",
+          "Medicine"
+        ],
+        "higherStudies": "Yes",
+        "entranceExams": [
+          "NEET"
+        ],
+        "workEnvironment": "Hospital/Clinic",
+        "workStyles": [
+          "Team-oriented",
+          "Helping Others"
+        ],
+        "financialConstraints": "High",
+        "locationRestrictions": "None",
+        "dreamCareer": "I want to become a doctor and help people, specializing in pediatrics"
+      }
+    },
+    {
+      "user": "User 3: Business & Management",
+      "status": "SUCCESS",
+      "top_5_careers": [
+        "Economist",
+        "Investment Banker",
+        "Business Analyst",
+        "Business Developer",
+        "Robotics Engineer"
+      ],
+      "total_recommendations": 10,
+      "profile": {
+        "email": "test3@example.com",
+        "name": "Arjun Mehta",
+        "stream": "Commerce",
+        "classLevel": "12th",
+        "marks10th": 85,
+        "marks12th": 87,
+        "cgpaSem": null,
+        "interests": {
+          "coding": 2,
+          "design": 3,
+          "math": 3,
+          "science": 2,
+          "business": 5,
+          "people": 5
+        },
+        "aptitude": {
+          "quantitative": 7,
+          "logical": 8,
+          "verbal": 9
+        },
+        "skills": [
+          "Leadership",
+          "Communication",
+          "Marketing",
+          "Finance"
+        ],
+        "careerDomains": [
+          "Business",
+          "Management",
+          "Finance"
+        ],
+        "higherStudies": "Yes",
+        "entranceExams": [
+          "CAT",
+          "GMAT"
+        ],
+        "workEnvironment": "Corporate Office",
+        "workStyles": [
+          "Team-oriented",
+          "Leadership"
+        ],
+        "financialConstraints": "Medium",
+        "locationRestrictions": "Metro cities",
+        "dreamCareer": "I want to become a business manager or start my own company"
+      }
+    },
+    {
+      "user": "User 4: Creative Designer",
+      "status": "SUCCESS",
+      "top_5_careers": [
+        "UI/UX Designer",
+        "Business Developer",
+        "Digital Marketer",
+        "Investment Banker",
+        "Business Analyst"
+      ],
+      "total_recommendations": 10,
+      "profile": {
+        "email": "test4@example.com",
+        "name": "Sneha Reddy",
+        "stream": "Arts",
+        "classLevel": "12th",
+        "marks10th": 78,
+        "marks12th": 82,
+        "cgpaSem": null,
+        "interests": {
+          "coding": 2,
+          "design": 5,
+          "math": 2,
+          "science": 2,
+          "business": 3,
+          "people": 4
+        },
+        "aptitude": {
+          "quantitative": 5,
+          "logical": 6,
+          "verbal": 8
+        },
+        "skills": [
+          "Photoshop",
+          "UI/UX Design",
+          "Creativity",
+          "Visual Arts"
+        ],
+        "careerDomains": [
+          "Design",
+          "Creative Arts",
+          "Media"
+        ],
+        "higherStudies": "Maybe",
+        "entranceExams": [
+          "NIFT",
+          "NID"
+        ],
+        "workEnvironment": "Studio/Creative Space",
+        "workStyles": [
+          "Creative",
+          "Independent"
+        ],
+        "financialConstraints": "Low",
+        "locationRestrictions": "None",
+        "dreamCareer": "I want to become a UX designer or graphic designer for tech companies"
+      }
+    },
+    {
+      "user": "User 5: Average Science Student (Undecided)",
+      "status": "SUCCESS",
+      "top_5_careers": [
+        "Game Developer",
+        "Robotics Engineer",
+        "Software Developer",
+        "Machine Learning Engineer",
+        "DevOps Engineer"
+      ],
+      "total_recommendations": 10,
+      "profile": {
+        "email": "test5@example.com",
+        "name": "Amit Kumar",
+        "stream": "Science",
+        "classLevel": "12th",
+        "marks10th": 75,
+        "marks12th": 72,
+        "cgpaSem": null,
+        "interests": {
+          "coding": 3,
+          "design": 2,
+          "math": 3,
+          "science": 3,
+          "business": 3,
+          "people": 3
+        },
+        "aptitude": {
+          "quantitative": 6,
+          "logical": 6,
+          "verbal": 6
+        },
+        "skills": [
+          "Basic Programming",
+          "Mathematics",
+          "Science"
+        ],
+        "careerDomains": [],
+        "higherStudies": "Maybe",
+        "entranceExams": [],
+        "workEnvironment": "Flexible",
+        "workStyles": [
+          "Team-oriented"
+        ],
+        "financialConstraints": "High",
+        "locationRestrictions": "Home city only",
+        "dreamCareer": "Not sure yet, exploring options"
+      }
+    }
+  ]
+}

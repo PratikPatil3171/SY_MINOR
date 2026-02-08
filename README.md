@@ -1,79 +1,212 @@
-# Personalized Career Advisor
+# Career Advisor - Backend Architecture
 
-A web application that helps students find the right career path based on their academic performance, interests, and aptitude test results.
-
-## Features
-
-- **User Authentication**: Login and signup system with profile management
-- **Aptitude Testing**: Three-section aptitude test (Quantitative, Logical, Verbal)
-- **Personalized Career Recommendations**: Based on student profile and test scores
-- **Student Dashboard**: View aptitude scores and career guidance
-
-## Technologies Used
-
-- **Frontend**: HTML, CSS, JavaScript
-- **Backend**: Node.js, Express.js
-- **Database**: JSON file-based storage
-- **Authentication**: bcryptjs for password hashing
-
-## Setup Instructions
-
-1. **Install Node.js** (if not already installed)
-   - Download from: https://nodejs.org/
-
-2. **Install Dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Start the Server**
-   ```bash
-   npm start
-   ```
-
-4. **Open in Browser**
-   - Navigate to: http://localhost:3000
-   - The application should now be running!
-
-## Usage
-
-1. **Create an Account**: Click "Signup" and fill in your student profile
-2. **Login**: Use your email and password to login
-3. **Take Aptitude Test**: Click on "Explore Aptitude Guidance" to take the test
-4. **View Results**: See your scores and personalized career recommendations
-
-## Project Structure
+## 📁 Project Structure
 
 ```
 Personalized/
-├── public/                 # Frontend static files
+├── src/                                # Backend source code
+│   ├── config/                         # Configuration files
+│   │   ├── database.js                 # MongoDB Atlas connection
+│   │   └── index.js                    # App configuration
+│   │
+│   ├── controllers/                    # Request handlers (business logic)
+│   │   ├── authController.js           # Signup, Login
+│   │   ├── profileController.js        # Get student profile
+│   │   ├── aptitudeController.js       # Generate questions, reset pool
+│   │   └── recommendationController.js # Career recommendations
+│   │
+│   ├── models/                         # Database schemas
+│   │   └── Student.js                  # Student model with timestamps
+│   │
+│   ├── routes/                         # API route definitions
+│   │   ├── authRoutes.js               # /api/signup, /api/login
+│   │   ├── profileRoutes.js            # /api/profile/:email
+│   │   ├── aptitudeRoutes.js           # /api/aptitude-questions
+│   │   └── recommendationRoutes.js     # /api/recommendations
+│   │
+│   ├── services/                       # External service integration
+│   │   ├── geminiService.js            # Gemini AI for questions
+│   │   └── pythonEngineService.js      # Python ML recommendations
+│   │
+│   ├── middlewares/                    # Express middlewares
+│   │   └── errorHandler.js             # Global error handler
+│   │
+│   ├── utils/                          # Utility functions
+│   │   └── helpers.js                  # Common helper functions
+│   │
+│   └── server.js                       # Main application entry point
+│
+├── public/                             # Frontend static files
+│   ├── index.html
 │   ├── css/
-│   │   └── main.css       # Application styles
 │   ├── js/
-│   │   └── app.js         # Frontend JavaScript
-│   ├── images/            # Image assets
-│   └── index.html         # Main application page
-├── src/                   # Backend source code
-│   └── server.js          # Express server
-├── data/                  # Database files
-│   └── database.json      # JSON database
-├── tests/                 # Test files
-│   └── api-test-client.html  # API testing client
-├── node_modules/          # Dependencies (auto-generated)
-├── .gitignore            # Git ignore rules
-├── package.json          # Node dependencies
-├── package-lock.json     # Locked dependencies
-└── README.md             # This file
+│   └── images/
+│
+├── python_engine/                      # ML recommendation engine
+│   ├── app.py                          # Flask API
+│   ├── recommendation_engine.py        # ML logic
+│   └── models/                         # Trained ML models
+│
+├── data/                               # Data files
+│   ├── careers.csv
+│   └── FakeStudents.csv
+│
+├── scripts/                            # Utility scripts
+│   └── migrate.js                      # JSON to MongoDB migration
+│
+├── .env                                # Environment variables (MongoDB URI)
+├── .env.example                        # Environment template
+├── package.json                        # Node.js dependencies
+└── README.md                           # This file
+
 ```
 
-## API Endpoints
+## 🏗️ Architecture Pattern: MVC (Model-View-Controller)
 
-- `POST /api/signup` - Create new student account
-- `POST /api/login` - Authenticate user
-- `GET /api/profile/:email` - Get user profile
-- `POST /api/aptitude/questions` - Generate aptitude questions
-- `POST /api/career-recommendations` - Get career recommendations
+### Models (`models/`)
+- Define database schema and data structure
+- Handle data validation
+- Database operations (CRUD)
 
-## Note
+### Controllers (`controllers/`)
+- Handle incoming HTTP requests
+- Process request data
+- Call services and models
+- Return HTTP responses
 
-This is a student project for learning web development concepts. The database is file-based and not suitable for production use.
+### Routes (`routes/`)
+- Define API endpoints
+- Map URLs to controller functions
+- Group related endpoints
+
+### Services (`services/`)
+- Business logic layer
+- External API integration (Gemini, Python)
+- Reusable business operations
+
+### Middlewares (`middlewares/`)
+- Request/response processing
+- Error handling
+- Authentication (future)
+- Logging (future)
+
+## 🔄 Request Flow
+
+```
+Client Request
+    ↓
+Express Router (routes/)
+    ↓
+Controller (controllers/)
+    ↓
+Service (services/) ← → External APIs
+    ↓
+Model (models/) ← → MongoDB Atlas
+    ↓
+Controller Response
+    ↓
+Client Response
+```
+
+## 📡 API Endpoints
+
+### Authentication
+- `POST /api/signup` - Register or update user profile
+- `POST /api/login` - Authenticate user and track login
+
+### Profile
+- `GET /api/profile/:email` - Get student profile by email
+
+### Aptitude Test
+- `POST /api/aptitude-questions` - Generate personalized questions
+- `POST /api/reset-question-pool` - Reset user's question history
+
+### Recommendations
+- `POST /api/recommendations` - Get ML-based career recommendations
+
+## 🗄️ Database (MongoDB Atlas)
+
+### Student Schema
+```javascript
+{
+  fullName: String,
+  email: String (unique),
+  passwordHash: String,
+  class: String,
+  stream: String,
+  ratings: { ... },
+  skills: [String],
+  careerDomains: [String],
+  
+  // Auto-generated timestamps
+  createdAt: Date,        // Signup time
+  updatedAt: Date,        // Last profile update
+  lastLoginAt: Date,      // Last login time
+  loginCount: Number      // Total login count
+}
+```
+
+## 🚀 Running the Application
+
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Configure Environment
+```bash
+# Copy template
+cp .env.example .env
+
+# Edit .env with your MongoDB Atlas connection string
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/career_advisor
+```
+
+### 3. Start Node.js Server
+```bash
+npm start
+```
+
+### 4. Start Python Engine (separate terminal)
+```bash
+cd python_engine
+python app.py
+```
+
+## 🧪 Development
+
+### Project Files Removed
+- ✅ Deleted 27 unnecessary markdown documentation files (IMPL/)
+- ✅ Removed redundant setup guides
+- ✅ Cleaned up test files
+- ✅ Moved migration script to scripts/
+
+### Code Improvements
+- ✅ Modular architecture (separation of concerns)
+- ✅ Consistent error handling
+- ✅ Better code organization
+- ✅ Reusable services and utilities
+- ✅ Clean server.js (from 700+ to 60 lines)
+
+## 📝 Future Enhancements
+
+- [ ] Add JWT authentication middleware
+- [ ] Implement request validation middleware
+- [ ] Add request logging
+- [ ] Create admin routes
+- [ ] Add rate limiting
+- [ ] Implement caching layer
+- [ ] Add API documentation (Swagger)
+- [ ] Unit and integration tests
+
+## 🤝 Contributing
+
+When adding new features:
+1. Create model in `models/` if needed
+2. Create controller in `controllers/`
+3. Create route in `routes/`
+4. Import route in `server.js`
+5. Add services in `services/` for external integrations
+
+## 📄 License
+MIT

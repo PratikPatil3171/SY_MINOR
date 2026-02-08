@@ -617,7 +617,40 @@
             </div>
             <div class="test-actions">
               <button
+                id="view-recommendations-btn"
+                type="button"
+                class="btn btn-primary"
+              >
+                Get Career Recommendations
+              </button>
+              <button
                 id="close-results-btn"
+                type="button"
+                class="btn btn-outline"
+              >
+                Close & Return
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Career Recommendations Screen -->
+        <div id="recommendations-screen" class="aptitude-test-screen hidden">
+          <div class="aptitude-test-container">
+            <div class="test-header">
+              <h2>Your Personalized Career Recommendations</h2>
+              <p class="subtitle">Based on your profile and aptitude test results</p>
+            </div>
+            <div id="recommendations-loading" class="loading-container hidden">
+              <div class="spinner"></div>
+              <p>Analyzing your profile and generating personalized recommendations...</p>
+            </div>
+            <div id="recommendations-content" class="recommendations-content">
+              <!-- Recommendations injected by JS -->
+            </div>
+            <div class="test-actions">
+              <button
+                id="close-recommendations-btn"
                 type="button"
                 class="btn btn-primary"
               >

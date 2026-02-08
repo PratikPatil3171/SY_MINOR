@@ -8,6 +8,8 @@ package-lock.json
 
 # Database
 data/database.json
+data/database_backup_*.json
+data/db/
 
 # Logs
 logs/
