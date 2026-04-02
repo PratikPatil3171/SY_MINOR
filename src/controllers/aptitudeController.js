@@ -49,12 +49,12 @@ exports.generateQuestions = async (req, res) => {
       );
 
       // If not enough new questions, use all questions
-      if (availableQuestions.length < 10) {
+      if (availableQuestions.length < 5) {
         availableQuestions = sectionQuestions;
       }
 
-      // Shuffle and take 10
-      const shuffled = shuffleArray(availableQuestions).slice(0, 10);
+      // Shuffle and take 5
+      const shuffled = shuffleArray(availableQuestions).slice(0, 5);
 
       // Shuffle options for each question
       return shuffled.map((q) => {
@@ -166,12 +166,12 @@ exports.submitScores = async (req, res) => {
     // Validate scores
     const { quantitative, logical, verbal } = scores;
     
-    if (quantitative < 0 || quantitative > 10 ||
-        logical < 0 || logical > 10 ||
-        verbal < 0 || verbal > 10) {
+    if (quantitative < 0 || quantitative > 5 ||
+        logical < 0 || logical > 5 ||
+        verbal < 0 || verbal > 5) {
       return res.status(400).json({
         ok: false,
-        message: "Scores must be between 0 and 10",
+        message: "Scores must be between 0 and 5",
       });
     }
 

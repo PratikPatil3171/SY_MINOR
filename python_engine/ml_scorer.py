@@ -40,6 +40,22 @@ class MLCareerScorer:
             self.fallback_scorer = CareerScorer(careers_df)
         
         print(f"MLCareerScorer initialized (ML mode: {self.use_ml})")
+
+    def _build_ml_features(self, student_profile: Dict) -> Dict[str, float]:
+        """
+        Convert normalized student aptitude values to the feature scale expected by ML models.
+
+        Student profile aptitudes are 0-10. Trained model features use a 0-100 scale,
+        so scale here to keep training and inference distributions aligned.
+        """
+        return {
+            "quant": min(max(student_profile.get("apt_quant", 0) * 10, 0), 100),
+            "logical": min(max(student_profile.get("apt_logical", 0) * 10, 0), 100),
+            "verbal": min(max(student_profile.get("apt_verbal", 0) * 10, 0), 100),
+            "creative": min(max(student_profile.get("apt_creative", 0) * 10, 0), 100),
+            "technical": min(max(student_profile.get("apt_technical", 0) * 10, 0), 100),
+            "commerce": min(max(student_profile.get("apt_commerce", 0) * 10, 0), 100),
+        }
     
     def calculate_aptitude_score_ml(self, student_profile: Dict, career_id: str) -> float:
         """
@@ -59,8 +75,12 @@ class MLCareerScorer:
         # Get career's primary domain
         career_domain = self.domain_mapper.get_career_domain(career_id)
         
+        # Map preprocessed profile fields to ML model feature keys.
+        # Without this mapping, the model receives zeros and predictions become static.
+        ml_features = self._build_ml_features(student_profile)
+
         # Predict domain fit scores using ML
-        domain_scores = self.ml_classifier.predict_domain_scores(student_profile)
+        domain_scores = self.ml_classifier.predict_domain_scores(ml_features)
         
         # Get fit score for this career's domain
         domain_fit = domain_scores.get(career_domain, 50)  # 0-100 scale
@@ -217,10 +237,14 @@ class MLCareerScorer:
             return {"ml_enabled": False, "message": "ML predictions not available"}
         
         # Get domain scores
-        domain_scores = self.ml_classifier.predict_domain_scores(student_profile)
+        domain_scores = self.ml_classifier.predict_domain_scores(
+            self._build_ml_features(student_profile)
+        )
         
         # Get primary domain prediction
-        primary_domain, confidence = self.ml_classifier.predict_primary_domain(student_profile)
+        primary_domain, confidence = self.ml_classifier.predict_primary_domain(
+            self._build_ml_features(student_profile)
+        )
         
         # Sort domains by fit score
         sorted_domains = sorted(domain_scores.items(), key=lambda x: x[1], reverse=True)

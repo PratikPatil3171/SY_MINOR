@@ -2,63 +2,64 @@
 // Keys
 const USER_KEY = "careerAdvisor_studentProfile";
 const SESSION_KEY = "careerAdvisor_sessionEmail";
+const TOKEN_KEY = "careerAdvisor_authToken";
 const API_BASE = "http://localhost:3000/api";
 
-// Elements
-const authModal = document.getElementById("auth-modal");
-const authTitle = document.getElementById("auth-title");
-const authSubtitle = document.getElementById("auth-subtitle");
-const authCloseBtn = document.getElementById("auth-close");
+// Elements - Will be initialized after DOM loads
+let authModal;
+let authTitle;
+let authSubtitle;
+let authCloseBtn;
 
-const aptitudeSection = document.getElementById("aptitude-section");
-const authStatus = document.getElementById("auth-status");
-const authMessage = document.getElementById("auth-message");
-const logoutBtn = document.getElementById("logout-btn");
+let aptitudeSection;
+let authStatus;
+let authMessage;
+let logoutBtn;
 
-const navLogin = document.getElementById("nav-login");
-const navSignup = document.getElementById("nav-signup");
-const navAptitude = document.getElementById("nav-aptitude");
-const navContact = document.getElementById("nav-contact");
-const navUser = document.getElementById("nav-user");
-const navUserName = document.getElementById("nav-user-name");
-const navLogoutBtn = document.getElementById("nav-logout");
+let navLogin;
+let navSignup;
+let navAptitude;
+let navCollege;
+let navContact;
+let navUser;
+let navUserName;
+let navLogoutBtn;
 
-const heroAptitudeBtn = document.getElementById("hero-aptitude-btn");
-const heroLoginBtn = document.getElementById("hero-login-btn");
+let heroAptitudeBtn;
+let heroLoginBtn;
 
-const loginForm = document.getElementById("login-form");
-const signupForm = document.getElementById("signup-form");
-const editProfileBtn = document.getElementById("edit-profile-btn");
+let loginForm;
+let signupForm;
+let editProfileBtn;
 
-const studentSummary = document.getElementById("student-summary");
-const loginPasswordToggle = document.getElementById("login-password-toggle");
+let studentSummary;
+let loginPasswordToggle;
 
-const startAptitudeBtn = document.getElementById("start-aptitude-btn");
-const quantitativeScoreEl = document.getElementById("quant-score");
-const logicalScoreEl = document.getElementById("logic-score");
-const verbalScoreEl = document.getElementById("verbal-score");
+let startAptitudeBtn;
+let quantitativeScoreEl;
+let logicalScoreEl;
+let verbalScoreEl;
 
-const aptitudeTestScreen = document.getElementById("aptitude-test-screen");
-const aptitudeResultsScreen = document.getElementById("aptitude-results-screen");
-const aptitudeQuestionsContainer = document.getElementById(
-  "aptitude-questions-container"
-);
-const testSectionTitle = document.getElementById("test-section-title");
-const testSectionSubtitle = document.getElementById("test-section-subtitle");
-const testProgressText = document.getElementById("test-progress-text");
-const testProgressFill = document.getElementById("test-progress-fill");
-const prevQuestionBtn = document.getElementById("prev-question-btn");
-const nextQuestionBtn = document.getElementById("next-question-btn");
-const submitSectionBtn = document.getElementById("submit-section-btn");
-const closeResultsBtn = document.getElementById("close-results-btn");
-const resultsContent = document.getElementById("results-content");
+let aptitudeTestScreen;
+let aptitudeResultsScreen;
+let aptitudeQuestionsContainer;
+let testSectionTitle;
+let testSectionSubtitle;
+let testProgressText;
+let testProgressFill;
+let prevQuestionBtn;
+let nextQuestionBtn;
+let submitSectionBtn;
+let closeResultsBtn;
+let resultsContent;
 
 // Recommendations elements
-const recommendationsScreen = document.getElementById("recommendations-screen");
-const recommendationsContent = document.getElementById("recommendations-content");
-const recommendationsLoading = document.getElementById("recommendations-loading");
-const viewRecommendationsBtn = document.getElementById("view-recommendations-btn");
-const closeRecommendationsBtn = document.getElementById("close-recommendations-btn");
+let recommendationsScreen;
+let recommendationsContent;
+let recommendationsLoading;
+let viewRecommendationsBtn;
+let closeRecommendationsBtn;
+let collegeSearchDebounceTimer;
 
 const APTITUDE_SCORES_KEY = "careerAdvisor_aptitudeScores";
 
@@ -68,9 +69,9 @@ let currentSectionIndex = 0; // 0: quantitative, 1: logical, 2: verbal
 let currentQuestionIndex = 0;
 let answers = {}; // { "quantitative-0": 1, "logical-3": 2, ... }
 const sections = [
-  { key: "quantitative", title: "Section 1: Quantitative Aptitude", subtitle: "Answer all 10 questions. Each question is worth 1 mark." },
-  { key: "logical", title: "Section 2: Logical Reasoning", subtitle: "Answer all 10 questions. Each question is worth 1 mark." },
-  { key: "verbal", title: "Section 3: Verbal & Communication", subtitle: "Answer all 10 questions. Each question is worth 1 mark." },
+  { key: "quantitative", title: "Section 1: Quantitative Aptitude", subtitle: "Answer all 5 questions. Each question is worth 1 mark." },
+  { key: "logical", title: "Section 2: Logical Reasoning", subtitle: "Answer all 5 questions. Each question is worth 1 mark." },
+  { key: "verbal", title: "Section 3: Verbal & Communication", subtitle: "Answer all 5 questions. Each question is worth 1 mark." },
 ];
 
 // Helpers
@@ -95,16 +96,50 @@ function setSession(email) {
 function clearSession() {
   localStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(USER_KEY);
+  localStorage.removeItem(TOKEN_KEY);
 }
 
 function getSession() {
   return localStorage.getItem(SESSION_KEY);
 }
 
+function saveToken(token) {
+  localStorage.setItem(TOKEN_KEY, token);
+}
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY);
+}
+
+function clearToken() {
+  localStorage.removeItem(TOKEN_KEY);
+}
+
+// Helper function to add Authorization header to fetch requests
+function getAuthHeaders() {
+  const token = getToken();
+  const headers = { "Content-Type": "application/json" };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
+}
+
+// Handle token expiration - logout user
+function handleTokenExpiration() {
+  clearSession();
+  clearToken();
+  updateAuthBanner();
+  alert('Your session has expired. Please login again.');
+  openAuthModal('login');
+}
+
 function isLoggedIn() {
   const user = getStoredUser();
   const sessionEmail = getSession();
-  return !!user && !!sessionEmail && user.email === sessionEmail;
+  const token = getToken();
+  // User must have valid user data, session, AND token
+  return !!user && !!sessionEmail && !!token && user.email === sessionEmail;
 }
 
 function openAuthModal(mode) {
@@ -179,6 +214,14 @@ function closeRecommendationsScreen() {
   document.body.style.overflow = "";
 }
 
+function openCollegeSearchScreen() {
+  if (!recommendationsScreen || !recommendationsContent) return;
+  recommendationsContent.innerHTML = getCollegeSearchPanelHtml();
+  recommendationsScreen.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  initCollegeSearchFeature();
+}
+
 async function fetchRecommendations() {
   const user = getStoredUser();
   const scores = getStoredScores();
@@ -199,8 +242,8 @@ async function fetchRecommendations() {
   const verbalScore = scores.verbal ?? 0;
   const average = (quantScore + logicScore + verbalScore) / 3;
   
-  if (average <= 4) {
-    alert("Your average score is " + average.toFixed(2) + ". Please score marks above 4 to view recommendations. You can attempt the test again to improve your score.");
+  if (average <= 2) {
+    alert("Your average score is " + average.toFixed(2) + ". Please score marks above 2 to view recommendations. You can attempt the test again to improve your score.");
     return;
   }
 
@@ -215,7 +258,7 @@ async function fetchRecommendations() {
       email: user.email,
       name: user.fullName,
       stream: user.stream,
-      classLevel: user.currentClass,
+      classLevel: user.class,
       marks10th: parseFloat(user.tenthPercentage) || null,
       marks12th: parseFloat(user.twelfthPercentage) || null,
       cgpaSem: user.cgpaSem || null,
@@ -230,7 +273,7 @@ async function fetchRecommendations() {
         people: user.ratings?.peopleInterest || 0,
       },
       
-      // Aptitude test scores (0-10)
+      // Aptitude test scores (0-5)
       aptitude: {
         quantitative: scores.quantitative || 0,
         logical: scores.logical || 0,
@@ -253,11 +296,17 @@ async function fetchRecommendations() {
 
     const res = await fetch(`${API_BASE}/recommendations`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify(studentData),
     });
 
     const data = await res.json();
+
+    // Handle token expiration
+    if (res.status === 401 && data.expired) {
+      handleTokenExpiration();
+      return;
+    }
 
     if (recommendationsLoading) recommendationsLoading.classList.add("hidden");
 
@@ -318,6 +367,52 @@ function renderRecommendations(recommendations) {
   }
 
   let html = '<div class="recommendations-list">';
+
+  function buildReasonBullets(career) {
+    const explanation = career.explanation || {};
+    const genericPatterns = [
+      /^your goals and interests/i,
+      /^good\s/i,
+      /^interested in\s/i,
+      /^strong quantitative reasoning\s*\(score:\s*[\d.]+\/10\)\s*$/i,
+      /^outstanding academic performance\s*\(cgpa:\s*[\d.]+\/10\)\s*$/i,
+    ];
+
+    const allReasons = [
+      ...(Array.isArray(explanation.key_reasons) ? explanation.key_reasons : []),
+      ...(Array.isArray(explanation.aptitude_match) ? explanation.aptitude_match : []),
+      ...(Array.isArray(explanation.interest_match) ? explanation.interest_match : []),
+      ...(Array.isArray(explanation.academic_fit) ? explanation.academic_fit : []),
+    ]
+      .map((item) => String(item || '').trim())
+      .filter(Boolean)
+      .filter((reason) => !genericPatterns.some((pattern) => pattern.test(reason)));
+
+    const unique = [];
+    allReasons.forEach((reason) => {
+      if (!unique.includes(reason)) unique.push(reason);
+    });
+
+    // Fallback to domain/skills if filtered reasons are too few.
+    if (unique.length < 2) {
+      if (career.domain) {
+        unique.push(`Aligned with the ${career.domain} domain`);
+      }
+
+      const skillList = Array.isArray(career.required_skills)
+        ? career.required_skills
+        : String(career.required_skills || '')
+            .split(',')
+            .map((part) => part.trim())
+            .filter(Boolean);
+
+      if (skillList.length > 0) {
+        unique.push(`Builds on key skills: ${skillList.slice(0, 2).join(', ')}`);
+      }
+    }
+
+    return unique.slice(0, 3);
+  }
   
   recommendations.forEach((career, index) => {
     const rank = index + 1;
@@ -328,7 +423,7 @@ function renderRecommendations(recommendations) {
     const explanation = career.explanation || {};
     const matchStrength = explanation.match_strength || 'Good Match';
     const summary = explanation.summary || '';
-    const keyReasons = explanation.key_reasons || [];
+    const keyReasons = buildReasonBullets(career);
     
     html += `
       <div class="recommendation-card">
@@ -377,6 +472,274 @@ function renderRecommendations(recommendations) {
   recommendationsContent.innerHTML = html;
 }
 
+function getCollegeSearchPanelHtml() {
+  return `
+    <section class="college-search-panel">
+      <div class="college-search-header">
+        <h3>Find Engineering Colleges in Maharashtra</h3>
+        <p>Use smart search and filters by district and branch, then open official websites directly.</p>
+      </div>
+
+      <div class="college-filter-grid">
+        <div class="form-group full">
+          <label for="college-search-input">Smart Search</label>
+          <input
+            type="text"
+            id="college-search-input"
+            placeholder="Search by college, district, or branch (e.g. pune computer)"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="college-district-filter">Districts</label>
+          <select id="college-district-filter"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="college-branch-filter">Branches</label>
+          <select id="college-branch-filter"></select>
+        </div>
+
+        <div class="form-group">
+          <label for="college-website-filter">Website Availability</label>
+          <select id="college-website-filter">
+            <option value="">All</option>
+            <option value="true">Has Official Website</option>
+            <option value="false">Missing Website</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="college-sort-filter">Sort By</label>
+          <select id="college-sort-filter">
+            <option value="relevance">Relevance</option>
+            <option value="name">College Name (A-Z)</option>
+            <option value="district">District (A-Z)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="college-filter-actions">
+        <button type="button" id="college-search-btn" class="btn btn-primary">Search</button>
+        <button type="button" id="college-clear-btn" class="btn btn-outline">Clear Filters</button>
+      </div>
+
+      <p id="college-search-summary" class="helper-text"></p>
+      <div id="college-results" class="college-results"></div>
+    </section>
+  `;
+}
+
+function getSelectedValue(element) {
+  if (!element) return '';
+  return String(element.value || '').trim();
+}
+
+function normalizeWebsiteUrl(url) {
+  const raw = String(url || '').trim();
+  if (!raw) return '';
+  if (/^https?:\/\//i.test(raw)) return raw;
+  return `https://${raw}`;
+}
+
+function buildCollegeSearchParams(page = 1) {
+  const qInput = document.getElementById('college-search-input');
+  const districtSelect = document.getElementById('college-district-filter');
+  const branchSelect = document.getElementById('college-branch-filter');
+  const websiteSelect = document.getElementById('college-website-filter');
+  const sortSelect = document.getElementById('college-sort-filter');
+
+  return {
+    q: qInput ? qInput.value.trim() : '',
+    district: getSelectedValue(districtSelect),
+    branch: getSelectedValue(branchSelect),
+    hasWebsite: websiteSelect ? websiteSelect.value : '',
+    sort: sortSelect ? sortSelect.value : 'relevance',
+    page,
+  };
+}
+
+function renderCollegeResults(payload) {
+  const summary = document.getElementById('college-search-summary');
+  const resultsContainer = document.getElementById('college-results');
+  const qInput = document.getElementById('college-search-input');
+  const districtSelect = document.getElementById('college-district-filter');
+  const branchSelect = document.getElementById('college-branch-filter');
+  const websiteSelect = document.getElementById('college-website-filter');
+
+  if (!resultsContainer || !summary) return;
+
+  const results = Array.isArray(payload.results) ? payload.results : [];
+  const totalCount = Number(payload.totalCount || 0);
+  const hasUserInput =
+    !!(qInput && qInput.value.trim()) ||
+    !!(districtSelect && districtSelect.value) ||
+    !!(branchSelect && branchSelect.value) ||
+    !!(websiteSelect && websiteSelect.value);
+
+  if (hasUserInput) {
+    summary.textContent = `${totalCount} related colleges found${payload.sourceCount ? ` (from ${payload.sourceCount} total records)` : ''}.`;
+  } else {
+    summary.textContent = `Showing ${results.length} colleges as an overview${payload.sourceCount ? ` (from ${payload.sourceCount} total records)` : ''}. Search or apply filters to see related colleges.`;
+  }
+
+  if (results.length === 0) {
+    resultsContainer.innerHTML = `
+      <div class="no-results">
+        <h3>No Colleges Matched</h3>
+        <p>Try a broader search term or remove a few filters.</p>
+      </div>
+    `;
+    return;
+  }
+
+  resultsContainer.innerHTML = results
+    .map((college) => {
+      const website = normalizeWebsiteUrl(college.websiteUrl);
+      const branches = Array.isArray(college.branches) ? college.branches : [];
+      const branchPreview = branches.slice(0, 5).join(', ');
+      const extraCount = Math.max(0, branches.length - 5);
+
+      return `
+        <article class="college-card">
+          <div class="college-card-header">
+            <h4>${college.collegeName || 'College'}</h4>
+            <span class="tag">${college.district || 'Unknown District'}</span>
+          </div>
+
+          <p class="college-branch-text">
+            <strong>Branches (${college.branchCount || branches.length}):</strong>
+            ${branchPreview || 'Not listed'}${extraCount ? ` +${extraCount} more` : ''}
+          </p>
+
+          <div class="college-card-actions">
+            ${website ? `<a class="btn btn-primary small" href="${website}" target="_blank" rel="noopener noreferrer">Visit Official Website</a>` : '<span class="helper-text">Official website not available</span>'}
+          </div>
+        </article>
+      `;
+    })
+    .join('');
+
+}
+
+function hydrateFilterOptions(facets) {
+  const districtSelect = document.getElementById('college-district-filter');
+  const branchSelect = document.getElementById('college-branch-filter');
+
+  if (districtSelect && districtSelect.options.length === 0) {
+    const districts = Array.isArray(facets?.districts) ? facets.districts : [];
+    districtSelect.innerHTML = [`<option value="">All Districts</option>`]
+      .concat(districts.map((item) => `<option value="${item.value}">${item.value} (${item.count})</option>`))
+      .join('');
+  }
+
+  if (branchSelect && branchSelect.options.length === 0) {
+    const branches = Array.isArray(facets?.branches) ? facets.branches.slice(0, 200) : [];
+    branchSelect.innerHTML = [`<option value="">All Branches</option>`]
+      .concat(branches.map((item) => `<option value="${item.value}">${item.value} (${item.count})</option>`))
+      .join('');
+  }
+}
+
+async function fetchCollegeSearch(page = 1) {
+  const params = buildCollegeSearchParams(page);
+  const query = new URLSearchParams();
+  const hasUserInput =
+    !!params.q ||
+    !!params.district ||
+    !!params.branch ||
+    !!params.hasWebsite;
+  const limit = hasUserInput ? 1000 : 8;
+
+  if (params.q) query.set('q', params.q);
+  if (params.district) query.set('districts', params.district);
+  if (params.branch) query.set('branches', params.branch);
+  if (params.hasWebsite) query.set('hasWebsite', params.hasWebsite);
+  if (params.sort) query.set('sort', params.sort);
+  query.set('page', String(params.page));
+  query.set('limit', String(limit));
+
+  const resultsContainer = document.getElementById('college-results');
+  if (resultsContainer) {
+    resultsContainer.innerHTML = '<p class="helper-text">Loading colleges...</p>';
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/colleges/search?${query.toString()}`);
+    const data = await res.json();
+
+    if (!data.ok) {
+      throw new Error(data.message || 'Search failed');
+    }
+
+    hydrateFilterOptions(data.facets || {});
+    renderCollegeResults(data);
+  } catch (error) {
+    console.error('College search error:', error);
+    if (resultsContainer) {
+      resultsContainer.innerHTML = `
+        <div class="error-message">
+          <h3>Unable to load colleges</h3>
+          <p>Please ensure your college dataset is available in the data folder.</p>
+        </div>
+      `;
+    }
+  }
+}
+
+function clearCollegeSearchFilters() {
+  const qInput = document.getElementById('college-search-input');
+  const districtSelect = document.getElementById('college-district-filter');
+  const branchSelect = document.getElementById('college-branch-filter');
+  const websiteSelect = document.getElementById('college-website-filter');
+  const sortSelect = document.getElementById('college-sort-filter');
+
+  if (qInput) qInput.value = '';
+  if (websiteSelect) websiteSelect.value = '';
+  if (sortSelect) sortSelect.value = 'relevance';
+
+  [districtSelect, branchSelect].forEach((sel) => {
+    if (!sel) return;
+    sel.value = '';
+  });
+
+  fetchCollegeSearch(1);
+}
+
+function initCollegeSearchFeature() {
+  const searchBtn = document.getElementById('college-search-btn');
+  const clearBtn = document.getElementById('college-clear-btn');
+  const searchInput = document.getElementById('college-search-input');
+  const districtSelect = document.getElementById('college-district-filter');
+  const branchSelect = document.getElementById('college-branch-filter');
+  const websiteSelect = document.getElementById('college-website-filter');
+  const sortSelect = document.getElementById('college-sort-filter');
+
+  if (searchBtn) {
+    searchBtn.addEventListener('click', () => fetchCollegeSearch(1));
+  }
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', clearCollegeSearchFilters);
+  }
+
+  const triggerWithDebounce = () => {
+    clearTimeout(collegeSearchDebounceTimer);
+    collegeSearchDebounceTimer = setTimeout(() => fetchCollegeSearch(1), 320);
+  };
+
+  if (searchInput) {
+    searchInput.addEventListener('input', triggerWithDebounce);
+  }
+
+  [districtSelect, branchSelect, websiteSelect, sortSelect].forEach((el) => {
+    if (!el) return;
+    el.addEventListener('change', () => fetchCollegeSearch(1));
+  });
+
+  fetchCollegeSearch(1);
+}
+
 function updateAuthBanner() {
   const user = getStoredUser();
   if (isLoggedIn() && user) {
@@ -404,7 +767,16 @@ function updateAuthBanner() {
 
 async function fetchProfileFromServer(email) {
   try {
-    const res = await fetch(`${API_BASE}/profile/${encodeURIComponent(email)}`);
+    const res = await fetch(`${API_BASE}/profile/${encodeURIComponent(email)}`, {
+      headers: getAuthHeaders()
+    });
+    if (res.status === 401) {
+      const data = await res.json();
+      if (data.expired) {
+        handleTokenExpiration();
+      }
+      return null;
+    }
     if (!res.ok) return null;
     const data = await res.json();
     if (data.ok) return data.user;
@@ -506,11 +878,18 @@ async function saveScores(scores) {
   try {
     const res = await fetch(`${API_BASE}/submit-scores`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ email: user.email, scores })
     });
 
     const data = await res.json();
+    
+    // Handle token expiration
+    if (res.status === 401 && data.expired) {
+      handleTokenExpiration();
+      return;
+    }
+
     if (data.ok) {
       // Update local user object with new scores
       user.aptitudeScores = data.scores;
@@ -529,26 +908,26 @@ function renderScores() {
   if (!scores || !scores.testTakenAt) {
     // No test taken yet - show placeholder
     if (quantitativeScoreEl) {
-      quantitativeScoreEl.textContent = '-- / 10';
+      quantitativeScoreEl.textContent = '-- / 5';
     }
     if (logicalScoreEl) {
-      logicalScoreEl.textContent = '-- / 10';
+      logicalScoreEl.textContent = '-- / 5';
     }
     if (verbalScoreEl) {
-      verbalScoreEl.textContent = '-- / 10';
+      verbalScoreEl.textContent = '-- / 5';
     }
     return;
   }
   
   // Display actual scores
   if (quantitativeScoreEl) {
-    quantitativeScoreEl.textContent = `${scores.quantitative ?? 0} / 10`;
+    quantitativeScoreEl.textContent = `${scores.quantitative ?? 0} / 5`;
   }
   if (logicalScoreEl) {
-    logicalScoreEl.textContent = `${scores.logical ?? 0} / 10`;
+    logicalScoreEl.textContent = `${scores.logical ?? 0} / 5`;
   }
   if (verbalScoreEl) {
-    verbalScoreEl.textContent = `${scores.verbal ?? 0} / 10`;
+    verbalScoreEl.textContent = `${scores.verbal ?? 0} / 5`;
   }
 }
 
@@ -754,10 +1133,17 @@ async function startAptitudeTest() {
   try {
     const res = await fetch(`${API_BASE}/aptitude-questions`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ classLevel, email }), // Send email to track attempts
     });
     const data = await res.json();
+    
+    // Handle token expiration
+    if (res.status === 401 && data.expired) {
+      handleTokenExpiration();
+      return;
+    }
+    
     if (!data.ok) {
       alert(data.message || "Unable to load questions right now.");
       return;
@@ -788,10 +1174,17 @@ async function resetQuestionPool() {
   try {
     const res = await fetch(`${API_BASE}/reset-question-pool`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ email: user.email }),
     });
     const data = await res.json();
+    
+    // Handle token expiration
+    if (res.status === 401 && data.expired) {
+      handleTokenExpiration();
+      return;
+    }
+    
     if (data.ok) {
       alert("Question pool reset! You can now see all questions again.");
     } else {
@@ -911,11 +1304,11 @@ function renderResults() {
   const average = ((quantScore + logicScore + verbalScore) / 3).toFixed(2);
   
   // Check if average is too low for recommendations
-  const lowScore = parseFloat(average) <= 4;
+  const lowScore = parseFloat(average) <= 2;
   const warningMessage = lowScore ? `
     <div class="result-warning" style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin-bottom: 20px; border-radius: 5px;">
       <h4 style="color: #856404; margin: 0 0 10px 0;">⚠️ Score Too Low for Recommendations</h4>
-      <p style="color: #856404; margin: 0;">Your average score is ${average} out of 10. You need to score above 4 to access career recommendations. Please attempt the test again to improve your score.</p>
+      <p style="color: #856404; margin: 0;">Your average score is ${average} out of 5. You need to score above 2 to access career recommendations. Please attempt the test again to improve your score.</p>
     </div>
   ` : '';
   
@@ -923,22 +1316,22 @@ function renderResults() {
     ${warningMessage}
     <div class="result-section">
       <h3>Quantitative Aptitude</h3>
-      <div class="result-score">${quantScore} / 10</div>
-      <p>You scored ${quantScore} out of 10 questions.</p>
+      <div class="result-score">${quantScore} / 5</div>
+      <p>You scored ${quantScore} out of 5 questions.</p>
     </div>
     <div class="result-section">
       <h3>Logical Reasoning</h3>
-      <div class="result-score">${logicScore} / 10</div>
-      <p>You scored ${logicScore} out of 10 questions.</p>
+      <div class="result-score">${logicScore} / 5</div>
+      <p>You scored ${logicScore} out of 5 questions.</p>
     </div>
     <div class="result-section">
       <h3>Verbal & Communication</h3>
-      <div class="result-score">${verbalScore} / 10</div>
-      <p>You scored ${verbalScore} out of 10 questions.</p>
+      <div class="result-score">${verbalScore} / 5</div>
+      <p>You scored ${verbalScore} out of 5 questions.</p>
     </div>
     <div class="result-section result-average">
       <h3>Average Score</h3>
-      <div class="result-score">${average} / 10</div>
+      <div class="result-score">${average} / 5</div>
       <p>Your overall aptitude average across all sections.</p>
       <p class="test-date">Test taken: ${new Date(scores.testTakenAt).toLocaleDateString()}</p>
     </div>
@@ -957,8 +1350,10 @@ async function handleLoginSubmit(e) {
       body: JSON.stringify({ email, password }),
     });
     const data = await res.json();
-    if (data.ok) {
+    if (data.ok && data.token) {
       const user = data.user;
+      // Save JWT token
+      saveToken(data.token);
       // store password locally for offline / fallback login only
       saveUser({ ...user, password });
       setSession(user.email);
@@ -1079,6 +1474,8 @@ async function handleSignupSubmit(e) {
       return;
     }
     const user = data.user;
+    // Save JWT token
+    saveToken(data.token);
     // store password locally for offline / fallback login only
     saveUser({ ...user, password });
     setSession(user.email);
@@ -1095,9 +1492,11 @@ async function handleSignupSubmit(e) {
 }
 
 function initNavigationGuards() {
-  navLogin.addEventListener("click", () => {
-    openAuthModal("login");
-  });
+  if (navLogin) {
+    navLogin.addEventListener("click", () => {
+      openAuthModal("login");
+    });
+  }
 
   if (navSignup) {
     navSignup.addEventListener("click", () => {
@@ -1105,14 +1504,22 @@ function initNavigationGuards() {
     });
   }
 
-  navAptitude.addEventListener("click", () => {
-    if (!isLoggedIn()) {
-      alert("Please login or create your profile to access aptitude section.");
-      openAuthModal("login");
-      return;
-    }
-    showAptitudeSection();
-  });
+  if (navAptitude) {
+    navAptitude.addEventListener("click", () => {
+      if (!isLoggedIn()) {
+        alert("Please login or create your profile to access aptitude section.");
+        openAuthModal("login");
+        return;
+      }
+      showAptitudeSection();
+    });
+  }
+
+  if (navCollege) {
+    navCollege.addEventListener("click", () => {
+      openCollegeSearchScreen();
+    });
+  }
 
   if (navContact) {
     navContact.addEventListener("click", () => {
@@ -1144,12 +1551,14 @@ function initNavigationGuards() {
 }
 
 function initLogout() {
-  logoutBtn.addEventListener("click", () => {
-    clearSession();
-    clearUserUI();
-    updateAuthBanner();
-    closeAuthModal();
-  });
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      clearSession();
+      clearUserUI();
+      updateAuthBanner();
+      closeAuthModal();
+    });
+  }
 
   if (navLogoutBtn) {
     navLogoutBtn.addEventListener("click", () => {
@@ -1169,13 +1578,13 @@ function clearUserUI() {
   
   // Reset aptitude scores to placeholder
   if (quantitativeScoreEl) {
-    quantitativeScoreEl.textContent = '-- / 10';
+    quantitativeScoreEl.textContent = '-- / 5';
   }
   if (logicalScoreEl) {
-    logicalScoreEl.textContent = '-- / 10';
+    logicalScoreEl.textContent = '-- / 5';
   }
   if (verbalScoreEl) {
-    verbalScoreEl.textContent = '-- / 10';
+    verbalScoreEl.textContent = '-- / 5';
   }
   
   // Clear login form fields for security
@@ -1190,15 +1599,21 @@ function clearUserUI() {
 }
 
 function initEditProfile() {
-  editProfileBtn.addEventListener("click", () => {
-    openAuthModal("signup");
-    syncSignupFormWithStoredUser();
-  });
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener("click", () => {
+      openAuthModal("signup");
+      syncSignupFormWithStoredUser();
+    });
+  }
 }
 
 function initForms() {
-  loginForm.addEventListener("submit", handleLoginSubmit);
-  signupForm.addEventListener("submit", handleSignupSubmit);
+  if (loginForm) {
+    loginForm.addEventListener("submit", handleLoginSubmit);
+  }
+  if (signupForm) {
+    signupForm.addEventListener("submit", handleSignupSubmit);
+  }
 }
 
 function initAptitudeTest() {
@@ -1247,6 +1662,61 @@ function initAptitudeTest() {
 
 // Initial boot
 document.addEventListener("DOMContentLoaded", () => {
+  // Initialize all DOM element references
+  authModal = document.getElementById("auth-modal");
+  authTitle = document.getElementById("auth-title");
+  authSubtitle = document.getElementById("auth-subtitle");
+  authCloseBtn = document.getElementById("auth-close");
+
+  aptitudeSection = document.getElementById("aptitude-section");
+  authStatus = document.getElementById("auth-status");
+  authMessage = document.getElementById("auth-message");
+  logoutBtn = document.getElementById("logout-btn");
+
+  navLogin = document.getElementById("nav-login");
+  navSignup = document.getElementById("nav-signup");
+  navAptitude = document.getElementById("nav-aptitude");
+  navCollege = document.getElementById("nav-college");
+  navContact = document.getElementById("nav-contact");
+  navUser = document.getElementById("nav-user");
+  navUserName = document.getElementById("nav-user-name");
+  navLogoutBtn = document.getElementById("nav-logout");
+
+  heroAptitudeBtn = document.getElementById("hero-aptitude-btn");
+  heroLoginBtn = document.getElementById("hero-login-btn");
+
+  loginForm = document.getElementById("login-form");
+  signupForm = document.getElementById("signup-form");
+  editProfileBtn = document.getElementById("edit-profile-btn");
+
+  studentSummary = document.getElementById("student-summary");
+  loginPasswordToggle = document.getElementById("login-password-toggle");
+
+  startAptitudeBtn = document.getElementById("start-aptitude-btn");
+  quantitativeScoreEl = document.getElementById("quant-score");
+  logicalScoreEl = document.getElementById("logic-score");
+  verbalScoreEl = document.getElementById("verbal-score");
+
+  aptitudeTestScreen = document.getElementById("aptitude-test-screen");
+  aptitudeResultsScreen = document.getElementById("aptitude-results-screen");
+  aptitudeQuestionsContainer = document.getElementById("aptitude-questions-container");
+  testSectionTitle = document.getElementById("test-section-title");
+  testSectionSubtitle = document.getElementById("test-section-subtitle");
+  testProgressText = document.getElementById("test-progress-text");
+  testProgressFill = document.getElementById("test-progress-fill");
+  prevQuestionBtn = document.getElementById("prev-question-btn");
+  nextQuestionBtn = document.getElementById("next-question-btn");
+  submitSectionBtn = document.getElementById("submit-section-btn");
+  closeResultsBtn = document.getElementById("close-results-btn");
+  resultsContent = document.getElementById("results-content");
+
+  recommendationsScreen = document.getElementById("recommendations-screen");
+  recommendationsContent = document.getElementById("recommendations-content");
+  recommendationsLoading = document.getElementById("recommendations-loading");
+  viewRecommendationsBtn = document.getElementById("view-recommendations-btn");
+  closeRecommendationsBtn = document.getElementById("close-recommendations-btn");
+
+  // Initialize all event listeners
   initRatingPills();
   initNavigationGuards();
   initForms();

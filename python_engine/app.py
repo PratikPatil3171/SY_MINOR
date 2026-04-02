@@ -106,8 +106,8 @@ def recommend_careers():
                 "error": "No data provided"
             }), 400
         
-        # Get top_k from query params (default: 10)
-        top_k = request.args.get('top_k', 10, type=int)
+        # Retrieve a wider candidate set, then callers can slice final display list.
+        top_k = request.args.get('top_k', 20, type=int)
         top_k = min(max(top_k, 1), 20)  # Clamp between 1-20
         
         # Generate recommendations

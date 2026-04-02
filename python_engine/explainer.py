@@ -9,6 +9,71 @@ class ExplanationGenerator:
     
     def __init__(self):
         pass
+
+    def _pick_top_label(self, score_map):
+        """Return the highest-scoring label and value from a score map."""
+        if not score_map:
+            return None, 0
+        top_label, top_value = max(score_map.items(), key=lambda item: item[1])
+        return top_label, top_value
+
+    def build_summary(self, career_data, scores, aptitude_reasons, interest_reasons, similarity_reason):
+        """
+        Build a concise, non-generic summary with the strongest reason first.
+        """
+        career_title = career_data["title"]
+
+        similarity_score = scores.get("similarity_score", 0)
+        aptitude_score = scores.get("aptitude_score", 0)
+        interest_score = scores.get("interest_score", 0)
+
+        domain = str(career_data.get("domain", "")).strip()
+        skills_raw = career_data.get("required_skills", "")
+        if isinstance(skills_raw, list):
+            skill_list = [str(item).strip() for item in skills_raw if str(item).strip()]
+        else:
+            skill_list = [part.strip() for part in str(skills_raw).split(',') if part.strip()]
+
+        top_reason = None
+        if similarity_reason:
+            top_reason = similarity_reason
+        elif interest_reasons:
+            top_reason = interest_reasons[0]
+        elif aptitude_reasons:
+            top_reason = aptitude_reasons[0]
+
+        reasons = []
+        if domain:
+            reasons.append(f"it aligns with the {domain} domain")
+
+        if skill_list:
+            key_skills = ", ".join(skill_list[:2])
+            reasons.append(f"it builds on core skills like {key_skills}")
+
+        if top_reason:
+            reasons.append(top_reason.rstrip('.'))
+
+        if similarity_score >= 7.5:
+            reasons.append("strong alignment with your career goals")
+
+        if aptitude_score >= 7:
+            reasons.append("your aptitude profile fits this role")
+
+        if interest_score >= 7:
+            reasons.append("your interests closely match this field")
+
+        # Keep only distinct points and cap length.
+        condensed = []
+        for reason in reasons:
+            if reason and reason not in condensed:
+                condensed.append(reason)
+            if len(condensed) == 2:
+                break
+
+        if condensed:
+            return f"{career_title} is recommended because {condensed[0]}" + (f", and {condensed[1]}." if len(condensed) > 1 else ".")
+
+        return f"{career_title} is recommended based on your overall profile fit."
     
     def generate_similarity_reason(self, student_profile, career_data, similarity_score):
         """
@@ -221,10 +286,6 @@ class ExplanationGenerator:
             explanation["match_strength"] = "Moderate Match"
             strength_text = "worth considering"
         
-        # Summary
-        career_title = career_data["title"]
-        explanation["summary"] = f"{career_title} is {strength_text} based on your profile."
-        
         # Key reasons (from similarity)
         similarity_score = scores.get("similarity_score", 0)
         similarity_reason = self.generate_similarity_reason(student_profile, career_data, similarity_score)
@@ -239,6 +300,21 @@ class ExplanationGenerator:
         
         # Academic fit
         explanation["academic_fit"] = self.generate_academic_reasons(student_profile, career_data)
+
+        # Append compact best reasons for quick UI display.
+        if explanation["aptitude_match"]:
+            explanation["key_reasons"].append(explanation["aptitude_match"][0])
+        if explanation["interest_match"]:
+            explanation["key_reasons"].append(explanation["interest_match"][0])
+
+        # Summary (dynamic, reason-first)
+        explanation["summary"] = self.build_summary(
+            career_data,
+            scores,
+            explanation["aptitude_match"],
+            explanation["interest_match"],
+            similarity_reason,
+        )
         
         return explanation
     

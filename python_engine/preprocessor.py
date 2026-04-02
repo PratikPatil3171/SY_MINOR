@@ -93,14 +93,14 @@ class StudentPreprocessor:
         people_interest = self.normalize_score(interests.get("people", 0), 5) * 2
         creative_interest = self.normalize_score(interests.get("creative", 0), 5) * 2
         
-        # Extract aptitude scores (assume 0-10 scale)
+        # Extract aptitude scores from API payload (frontend sends 0-5, normalize to 0-10)
         aptitude = form_data.get("aptitude", {})
-        apt_quant = self.normalize_score(aptitude.get("quantitative", 0))
-        apt_logical = self.normalize_score(aptitude.get("logical", 0))
-        apt_verbal = self.normalize_score(aptitude.get("verbal", 0))
-        apt_creative = self.normalize_score(aptitude.get("creative", 0))
-        apt_technical = self.normalize_score(aptitude.get("technical", 0))
-        apt_commerce = self.normalize_score(aptitude.get("commerce", 0))
+        apt_quant = self.normalize_score(aptitude.get("quantitative", 0), 5) * 2
+        apt_logical = self.normalize_score(aptitude.get("logical", 0), 5) * 2
+        apt_verbal = self.normalize_score(aptitude.get("verbal", 0), 5) * 2
+        apt_creative = self.normalize_score(aptitude.get("creative", 0), 5) * 2
+        apt_technical = self.normalize_score(aptitude.get("technical", 0), 5) * 2
+        apt_commerce = self.normalize_score(aptitude.get("commerce", 0), 5) * 2
         
         # Extract subject percentages
         maths_pct = self.normalize_score(form_data.get("mathsPercent", 0), 100)

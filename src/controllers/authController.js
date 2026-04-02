@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const Student = require('../models/Student');
+const { generateToken } = require('../middlewares/authMiddleware');
 
 /**
  * Handle user signup - create or update student profile
@@ -43,9 +44,13 @@ exports.signup = async (req, res) => {
     delete safeUser.passwordHash;
     delete safeUser.__v;
 
+    // Generate JWT token
+    const token = generateToken(safeUser);
+
     res.json({ 
       ok: true, 
       user: safeUser,
+      token,
       message: `Account ${student.loginCount === 0 ? 'created' : 'updated'} successfully`,
       signupAt: student.createdAt
     });
@@ -104,9 +109,13 @@ exports.login = async (req, res) => {
     delete safeUser.passwordHash;
     delete safeUser.__v;
 
+    // Generate JWT token
+    const token = generateToken(safeUser);
+
     res.json({ 
       ok: true, 
       user: safeUser,
+      token,
       message: "Login successful",
       lastLoginAt: student.lastLoginAt,
       loginCount: student.loginCount

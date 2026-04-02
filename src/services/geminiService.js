@@ -7,214 +7,309 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
  */
 const fallbackQuestions = {
   quantitative: [
+    // {
+    //   id: "q1",
+    //   question: "A shopkeeper sells an item at 20% profit. If the cost price is ₹500, what is the selling price?",
+    //   options: ["₹600", "₹550", "₹625", "₹580"],
+    //   answerIndex: 0,
+    // },
+    // {
+    //   id: "q2",
+    //   question: "If 3x + 5 = 20, what is the value of x?",
+    //   options: ["3", "4", "5", "6"],
+    //   answerIndex: 2,
+    // },
+    // {
+    //   id: "q3",
+    //   question: "A train 150m long passes a pole in 10 seconds. What is the speed of the train in km/h?",
+    //   options: ["45 km/h", "54 km/h", "60 km/h", "72 km/h"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "q4",
+    //   question: "If the area of a circle is 154 cm², what is its radius? (Take π = 22/7)",
+    //   options: ["5 cm", "6 cm", "7 cm", "8 cm"],
+    //   answerIndex: 2,
+    // },
+    // {
+    //   id: "q5",
+    //   question: "A number when divided by 7 gives a quotient of 12 and remainder 5. What is the number?",
+    //   options: ["84", "89", "91", "96"],
+    //   answerIndex: 1,
+    // },
     {
       id: "q1",
-      question: "A shopkeeper sells an item at 20% profit. If the cost price is ₹500, what is the selling price?",
-      options: ["₹600", "₹550", "₹625", "₹580"],
-      answerIndex: 0,
-    },
-    {
-      id: "q2",
-      question: "If 3x + 5 = 20, what is the value of x?",
-      options: ["3", "4", "5", "6"],
-      answerIndex: 2,
-    },
-    {
-      id: "q3",
-      question: "A train 150m long passes a pole in 10 seconds. What is the speed of the train in km/h?",
-      options: ["45 km/h", "54 km/h", "60 km/h", "72 km/h"],
-      answerIndex: 1,
-    },
-    {
-      id: "q4",
-      question: "If the area of a circle is 154 cm², what is its radius? (Take π = 22/7)",
-      options: ["5 cm", "6 cm", "7 cm", "8 cm"],
-      answerIndex: 2,
-    },
-    {
-      id: "q5",
-      question: "A number when divided by 7 gives a quotient of 12 and remainder 5. What is the number?",
-      options: ["84", "89", "91", "96"],
-      answerIndex: 1,
-    },
-    {
-      id: "q6",
       question: "If 25% of a number is 75, what is 40% of that number?",
       options: ["100", "120", "150", "180"],
       answerIndex: 1,
     },
+    // {
+    //   id: "q7",
+    //   question: "The sum of three consecutive even numbers is 54. What is the largest number?",
+    //   options: ["16", "18", "20", "22"],
+    //   answerIndex: 2,
+    // },
+    // {
+    //   id: "q8",
+    //   question: "If a person walks at 6 km/h, how long will it take to cover 4.5 km?",
+    //   options: ["40 minutes", "45 minutes", "50 minutes", "55 minutes"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "q9",
+    //   question: "A rectangle has length 12 cm and width 8 cm. What is the area of a square with the same perimeter?",
+    //   options: ["64 cm²", "81 cm²", "100 cm²", "121 cm²"],
+    //   answerIndex: 2,
+    // },
+    // {
+    //   id: "q10",
+    //   question: "If 2^5 × 3^2 = ?",
+    //   options: ["144", "192", "288", "324"],
+    //   answerIndex: 2,
+    // },
     {
-      id: "q7",
-      question: "The sum of three consecutive even numbers is 54. What is the largest number?",
-      options: ["16", "18", "20", "22"],
-      answerIndex: 2,
-    },
-    {
-      id: "q8",
-      question: "If a person walks at 6 km/h, how long will it take to cover 4.5 km?",
-      options: ["40 minutes", "45 minutes", "50 minutes", "55 minutes"],
+      id: "q2",
+      question: "A man buys 20 apples for ₹100. He sells 15 at ₹6 each and rest at ₹8 each. What is his profit?",
+      options: ["₹20", "₹30", "₹40", "₹50"],
       answerIndex: 1,
     },
     {
-      id: "q9",
-      question: "A rectangle has length 12 cm and width 8 cm. What is the area of a square with the same perimeter?",
-      options: ["64 cm²", "81 cm²", "100 cm²", "121 cm²"],
+      id: "q3",
+      question: "If the ratio of boys to girls is 3:2 and there are 45 boys, how many girls are there?",
+      options: ["20", "25", "30", "35"],
       answerIndex: 2,
     },
     {
-      id: "q10",
-      question: "If 2^5 × 3^2 = ?",
-      options: ["144", "192", "288", "324"],
+      id: "q4",
+      question: "A car travels 60 km in 1.5 hours. What is its average speed in km/h?",
+      options: ["30", "35", "40", "45"],
       answerIndex: 2,
     },
+    {
+      id: "q5",
+      question: "If 15% of a number is 90, what is the number?",
+      options: ["500", "550", "600", "650"],
+      answerIndex: 2,
+    },
+    // {
+    //   id: "q15",
+    //   question: "The sum of two numbers is 50 and their difference is 10. What is the larger number?",
+    //   options: ["25", "30", "35", "40"],
+    //   answerIndex: 1,
+    // },
   ],
   logical: [
+    // {
+    //   id: "l1",
+    //   question: "In a code, CAT is written as 3120. How is DOG written in that code?",
+    //   options: ["4157", "4156", "4158", "4159"],
+    //   answerIndex: 0,
+    // },
+    // {
+    //   id: "l2",
+    //   question: "If all roses are flowers and some flowers are red, which statement must be true?",
+    //   options: [
+    //     "All roses are red",
+    //     "Some roses are red",
+    //     "No roses are red",
+    //     "Cannot be determined",
+    //   ],
+    //   answerIndex: 3,
+    // },
+    // {
+    //   id: "l3",
+    //   question: "What comes next: 2, 6, 12, 20, 30, ?",
+    //   options: ["40", "42", "44", "46"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "l4",
+    //   question: "If Monday is the first day, what day will it be after 25 days?",
+    //   options: ["Thursday", "Friday", "Saturday", "Sunday"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "l5",
+    //   question: "A is taller than B, C is shorter than A. Who is the tallest?",
+    //   options: ["A", "B", "C", "Cannot be determined"],
+    //   answerIndex: 0,
+    // },
+    // {
+    //   id: "l6",
+    //   question: "In a row, Priya is 15th from the left and 20th from the right. How many people are in the row?",
+    //   options: ["33", "34", "35", "36"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "l7",
+    //   question: "If 5 × 3 = 15, 7 × 4 = 28, then 9 × 6 = ?",
+    //   options: ["45", "54", "63", "72"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "l8",
+    //   question: "Complete the series: Z, Y, X, W, V, ?",
+    //   options: ["U", "T", "S", "R"],
+    //   answerIndex: 0,
+    // },
+    // {
+    //   id: "l9",
+    //   question: "If all doctors are professionals and some professionals are teachers, which is true?",
+    //   options: [
+    //     "All doctors are teachers",
+    //     "Some doctors are teachers",
+    //     "No doctors are teachers",
+    //     "Cannot be determined",
+    //   ],
+    //   answerIndex: 3,
+    // },
+    // {
+    //   id: "l10",
+    //   question: "Find the odd one out: 8, 27, 64, 100, 125",
+    //   options: ["8", "27", "100", "125"],
+    //   answerIndex: 2,
+    // },
     {
       id: "l1",
-      question: "In a code, CAT is written as 3120. How is DOG written in that code?",
-      options: ["4157", "4156", "4158", "4159"],
-      answerIndex: 0,
+      question: "If SUN is coded as 54, what is MOON coded as?",
+      options: ["57", "58", "59", "60"],
+      answerIndex: 2,
     },
     {
       id: "l2",
-      question: "If all roses are flowers and some flowers are red, which statement must be true?",
-      options: [
-        "All roses are red",
-        "Some roses are red",
-        "No roses are red",
-        "Cannot be determined",
-      ],
-      answerIndex: 3,
+      question: "Find the missing number: 3, 7, 15, 31, ?",
+      options: ["47", "53", "63", "71"],
+      answerIndex: 2,
     },
     {
       id: "l3",
-      question: "What comes next: 2, 6, 12, 20, 30, ?",
-      options: ["40", "42", "44", "46"],
-      answerIndex: 1,
+      question: "If North becomes West, what does East become?",
+      options: ["North", "South", "West", "East"],
+      answerIndex: 0,
     },
     {
       id: "l4",
-      question: "If Monday is the first day, what day will it be after 25 days?",
-      options: ["Thursday", "Friday", "Saturday", "Sunday"],
+      question: "A clock shows 3:15. What is the angle between hour and minute hands?",
+      options: ["0°", "7.5°", "15°", "22.5°"],
       answerIndex: 1,
     },
     {
       id: "l5",
-      question: "A is taller than B, C is shorter than A. Who is the tallest?",
-      options: ["A", "B", "C", "Cannot be determined"],
-      answerIndex: 0,
-    },
-    {
-      id: "l6",
-      question: "In a row, Priya is 15th from the left and 20th from the right. How many people are in the row?",
-      options: ["33", "34", "35", "36"],
-      answerIndex: 1,
-    },
-    {
-      id: "l7",
-      question: "If 5 × 3 = 15, 7 × 4 = 28, then 9 × 6 = ?",
-      options: ["45", "54", "63", "72"],
-      answerIndex: 1,
-    },
-    {
-      id: "l8",
-      question: "Complete the series: Z, Y, X, W, V, ?",
-      options: ["U", "T", "S", "R"],
-      answerIndex: 0,
-    },
-    {
-      id: "l9",
-      question: "If all doctors are professionals and some professionals are teachers, which is true?",
-      options: [
-        "All doctors are teachers",
-        "Some doctors are teachers",
-        "No doctors are teachers",
-        "Cannot be determined",
-      ],
-      answerIndex: 3,
-    },
-    {
-      id: "l10",
-      question: "Find the odd one out: 8, 27, 64, 100, 125",
-      options: ["8", "27", "100", "125"],
+      question: "Complete: AB, DE, HI, MN, ?",
+      options: ["PQ", "QR", "RS", "ST"],
       answerIndex: 2,
     },
   ],
   verbal: [
+    // {
+    //   id: "v1",
+    //   question: "Choose the correct synonym for 'Benevolent':",
+    //   options: ["Cruel", "Kind", "Strict", "Lazy"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "v2",
+    //   question: "Fill in the blank: She is the _____ student in the class.",
+    //   options: ["good", "better", "best", "well"],
+    //   answerIndex: 2,
+    // },
+    // {
+    //   id: "v3",
+    //   question: "Identify the error: 'Neither of the students were present.'",
+    //   options: [
+    //     "No error",
+    //     "were should be was",
+    //     "students should be student",
+    //     "present should be presence",
+    //   ],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "v4",
+    //   question: "Choose the correct meaning of 'Procrastinate':",
+    //   options: [
+    //     "To do immediately",
+    //     "To delay or postpone",
+    //     "To complete quickly",
+    //     "To organize",
+    //   ],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "v5",
+    //   question: "Select the correctly spelled word:",
+    //   options: ["Accomodate", "Accommodate", "Acommodate", "Acomodate"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "v6",
+    //   question: "Choose the appropriate preposition: 'She is allergic _____ peanuts.'",
+    //   options: ["to", "for", "with", "at"],
+    //   answerIndex: 0,
+    // },
+    // {
+    //   id: "v7",
+    //   question: "What is the antonym of 'Abundant'?",
+    //   options: ["Plentiful", "Scarce", "Many", "Rich"],
+    //   answerIndex: 1,
+    // },
+    // {
+    //   id: "v8",
+    //   question: "Identify the figure of speech: 'The wind whispered through the trees.'",
+    //   options: ["Simile", "Metaphor", "Personification", "Alliteration"],
+    //   answerIndex: 2,
+    // },
+    // {
+    //   id: "v9",
+    //   question: "Choose the correct form: 'I wish I _____ harder for the exam.'",
+    //   options: ["study", "studied", "had studied", "will study"],
+    //   answerIndex: 2,
+    // },
+    // {
+    //   id: "v10",
+    //   question: "What does 'Eloquent' mean?",
+    //   options: [
+    //     "Unable to speak",
+    //     "Fluent and persuasive in speaking",
+    //     "Quiet and shy",
+    //     "Rude and impolite",
+    //   ],
+    //   answerIndex: 1,
+    // },
     {
       id: "v1",
-      question: "Choose the correct synonym for 'Benevolent':",
-      options: ["Cruel", "Kind", "Strict", "Lazy"],
-      answerIndex: 1,
+      question: "Choose the correct passive voice: 'They are building a new hospital.'",
+      options: [
+        "A new hospital is being built by them",
+        "A new hospital was being built by them",
+        "A new hospital is built by them",
+        "A new hospital has been built by them",
+      ],
+      answerIndex: 0,
     },
     {
       id: "v2",
-      question: "Fill in the blank: She is the _____ student in the class.",
-      options: ["good", "better", "best", "well"],
+      question: "Identify the type of sentence: 'What a beautiful painting!'",
+      options: ["Declarative", "Interrogative", "Exclamatory", "Imperative"],
       answerIndex: 2,
     },
     {
       id: "v3",
-      question: "Identify the error: 'Neither of the students were present.'",
-      options: [
-        "No error",
-        "were should be was",
-        "students should be student",
-        "present should be presence",
-      ],
+      question: "Choose the correct article: 'He is _____ honest man.'",
+      options: ["a", "an", "the", "no article"],
       answerIndex: 1,
     },
     {
       id: "v4",
-      question: "Choose the correct meaning of 'Procrastinate':",
-      options: [
-        "To do immediately",
-        "To delay or postpone",
-        "To complete quickly",
-        "To organize",
-      ],
+      question: "What does the idiom 'Piece of cake' mean?",
+      options: ["Difficult task", "Easy task", "Sweet dish", "Celebration"],
       answerIndex: 1,
     },
     {
       id: "v5",
-      question: "Select the correctly spelled word:",
-      options: ["Accomodate", "Accommodate", "Acommodate", "Acomodate"],
-      answerIndex: 1,
-    },
-    {
-      id: "v6",
-      question: "Choose the appropriate preposition: 'She is allergic _____ peanuts.'",
-      options: ["to", "for", "with", "at"],
-      answerIndex: 0,
-    },
-    {
-      id: "v7",
-      question: "What is the antonym of 'Abundant'?",
-      options: ["Plentiful", "Scarce", "Many", "Rich"],
-      answerIndex: 1,
-    },
-    {
-      id: "v8",
-      question: "Identify the figure of speech: 'The wind whispered through the trees.'",
-      options: ["Simile", "Metaphor", "Personification", "Alliteration"],
+      question: "Choose the correct conjunction: 'I will go to the party _____ I finish my work.'",
+      options: ["because", "although", "if", "unless"],
       answerIndex: 2,
-    },
-    {
-      id: "v9",
-      question: "Choose the correct form: 'I wish I _____ harder for the exam.'",
-      options: ["study", "studied", "had studied", "will study"],
-      answerIndex: 2,
-    },
-    {
-      id: "v10",
-      question: "What does 'Eloquent' mean?",
-      options: [
-        "Unable to speak",
-        "Fluent and persuasive in speaking",
-        "Quiet and shy",
-        "Rude and impolite",
-      ],
-      answerIndex: 1,
     },
   ],
 };
@@ -255,9 +350,15 @@ exports.generateAptitudeQuestions = async (classLevel) => {
   }
 
   if (!GEMINI_API_KEY) {
-    console.log('⚠️ Gemini API key not found, using fallback questions');
+    console.log('\n⚠️ ========================================');
+    console.log('⚠️ GEMINI API KEY NOT CONFIGURED');
+    console.log('⚠️ Using FALLBACK questions (limited variety)');
+    console.log('⚠️ Add GEMINI_API_KEY to .env file for unique questions');
+    console.log('⚠️ ========================================\n');
     return fallbackQuestions;
   }
+
+  console.log('\n✅ Gemini API key found - generating UNIQUE questions...');
 
   try {
     const prompt = `You are an expert aptitude test generator for Indian students preparing for competitive exams and career assessments.
@@ -266,23 +367,23 @@ TARGET STUDENT: ${levelText}
 
 ${difficultyGuide}
 
-Generate three sections with EXACTLY 10 UNIQUE questions each:
+Generate three sections with EXACTLY 5 UNIQUE questions each:
 
-SECTION 1 - QUANTITATIVE APTITUDE (10 questions)
+SECTION 1 - QUANTITATIVE APTITUDE (5 questions)
 Topics to cover: ${quantTopics}
 - Each question MUST test a DIFFERENT concept
 - Vary question types: calculations, word problems, data interpretation
 - For Class 10: Focus on CBSE/ICSE Class 10 curriculum level
 - For Class 12: Include JEE/competitive exam style questions
 
-SECTION 2 - LOGICAL REASONING (10 questions)
+SECTION 2 - LOGICAL REASONING (5 questions)
 Topics to cover: ${logicalTopics}
 - Each question MUST be DISTINCT and test different reasoning skills
 - Include variety: patterns, verbal reasoning, analytical reasoning
 - For Class 10: Basic to moderate difficulty
 - For Class 12: Advanced problem-solving, similar to CAT/competitive exams
 
-SECTION 3 - VERBAL & COMMUNICATION (10 questions)
+SECTION 3 - VERBAL & COMMUNICATION (5 questions)
 Topics to cover: ${verbalTopics}
 - Each question MUST test different language skills
 - Mix of grammar, vocabulary, and comprehension
@@ -300,9 +401,9 @@ CRITICAL JSON FORMAT REQUIREMENTS:
 
 STRICT RULES:
 ✓ Return ONLY valid JSON (no markdown, no explanations, no code blocks)
-✓ EXACTLY 10 questions per section (30 total)
-✓ Each question ID must be unique (q1-q10, l1-l10, v1-v10)
-✓ All 10 questions in EACH section must be COMPLETELY DIFFERENT
+✓ EXACTLY 5 questions per section (15 total)
+✓ Each question ID must be unique (q1-q5, l1-l5, v1-v5)
+✓ All 5 questions in EACH section must be COMPLETELY DIFFERENT
 ✓ 3-5 options per question
 ✓ answerIndex is 0-based (0 = first option, 1 = second, etc.)
 ✓ Use Indian context (₹ for currency, Indian names, realistic scenarios)
@@ -316,7 +417,7 @@ DIFFICULTY CALIBRATION:
 Generate NOW:`;
 
     const res = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" +
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" +
         GEMINI_API_KEY,
       {
         method: "POST",
@@ -337,9 +438,12 @@ Generate NOW:`;
     );
 
     if (!res.ok) {
-      console.error("Gemini API error status", res.status);
+      console.error('\n❌ Gemini API request failed with status:', res.status);
+      console.error('❌ Falling back to hardcoded questions');
       return fallbackQuestions;
     }
+
+    console.log('✅ Gemini API response received successfully');
 
     const data = await res.json();
     const text =
@@ -347,20 +451,33 @@ Generate NOW:`;
       data?.candidates?.[0]?.output_text;
 
     if (!text) {
+      console.error('❌ No text received from Gemini API - using fallback');
       return fallbackQuestions;
     }
+
+    console.log('✅ Parsing Gemini API response...');
 
     // Strip markdown code blocks if present
     const cleaned = text.replace(/```json|```/g, "").trim();
     const parsed = JSON.parse(cleaned);
 
     if (!parsed.quantitative || !parsed.logical || !parsed.verbal) {
+      console.error('❌ Gemini response missing sections - using fallback');
       return fallbackQuestions;
     }
 
+    console.log('✅ ========================================');
+    console.log('✅ UNIQUE QUESTIONS GENERATED BY GEMINI AI');
+    console.log('✅ Quantitative:', parsed.quantitative.length, 'questions');
+    console.log('✅ Logical:', parsed.logical.length, 'questions');
+    console.log('✅ Verbal:', parsed.verbal.length, 'questions');
+    console.log('✅ ========================================\n');
     return parsed;
   } catch (err) {
-    console.error("Error calling Gemini API", err);
+    console.error('\n❌ ========================================');
+    console.error('❌ ERROR calling Gemini API:', err.message);
+    console.error('❌ Falling back to hardcoded questions');
+    console.error('❌ ========================================\n');
     return fallbackQuestions;
   }
 };

@@ -99,6 +99,19 @@ body {
   box-shadow: 0 14px 35px rgba(79, 70, 229, 0.6);
 }
 
+.nav-btn-college {
+  font-weight: 700;
+  color: #ecfeff;
+  border-color: rgba(14, 116, 144, 0.85);
+  background: linear-gradient(135deg, #0f766e, #0e7490);
+  box-shadow: 0 10px 24px rgba(14, 116, 144, 0.35);
+}
+
+.nav-btn-college:hover {
+  color: #f0fdfa;
+  box-shadow: 0 14px 34px rgba(14, 116, 144, 0.55);
+}
+
 .app-main {
   display: flex;
   flex-direction: column;
@@ -1201,6 +1214,123 @@ select[multiple] {
   font-size: 0.9em;
 }
 
+.college-search-panel {
+  margin-top: 22px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: rgba(15, 23, 42, 0.75);
+  padding: 16px;
+}
+
+.college-search-header h3 {
+  margin: 0 0 6px;
+}
+
+.college-search-header p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
+
+.college-filter-grid {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 14px;
+}
+
+.college-filter-actions {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.college-filter-grid select,
+.college-filter-grid input {
+  border-radius: 12px;
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.95));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.college-filter-grid select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #38bdf8 50%), linear-gradient(135deg, #38bdf8 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% + 1px), calc(100% - 12px) calc(50% + 1px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 32px;
+}
+
+.college-filter-grid select option {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+.college-filter-grid select option:checked,
+.college-filter-grid select option:hover,
+.college-filter-grid select option:focus {
+  background: #0f766e;
+  color: #f8fafc;
+}
+
+.college-filter-grid select:focus,
+.college-filter-grid input:focus {
+  border-color: rgba(56, 189, 248, 0.9);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.college-filter-grid label {
+  color: #dbeafe;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.college-results {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.college-card {
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  background: rgba(2, 6, 23, 0.95);
+  padding: 12px;
+}
+
+.college-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.college-card-header h4 {
+  margin: 0;
+  font-size: 0.94rem;
+}
+
+.college-branch-text {
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.college-card-actions {
+  margin-top: 10px;
+}
+
+.college-pagination-actions {
+  margin-top: 12px;
+  display: flex;
+  gap: 8px;
+}
+
 @media (max-width: 768px) {
   .app-container {
     padding-inline: 14px;
@@ -1240,6 +1370,11 @@ select[multiple] {
   }
 
   .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .college-filter-grid,
+  .college-results {
     grid-template-columns: 1fr;
   }
 }

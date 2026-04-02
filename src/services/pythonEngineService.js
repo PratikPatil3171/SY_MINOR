@@ -9,7 +9,7 @@ const PYTHON_ENGINE_URL = process.env.PYTHON_ENGINE_URL || 'http://localhost:500
  */
 exports.getRecommendations = async (studentData) => {
   try {
-    const pythonResponse = await fetch(`${PYTHON_ENGINE_URL}/api/recommend`, {
+    const pythonResponse = await fetch(`${PYTHON_ENGINE_URL}/api/recommend?top_k=20`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

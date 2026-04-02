@@ -18,6 +18,10 @@ exports.getRecommendations = async (req, res) => {
 
     // Forward request to Python recommendation engine
     const recommendations = await pythonEngineService.getRecommendations(studentData);
+
+    if (Array.isArray(recommendations.recommendations)) {
+      recommendations.recommendations = recommendations.recommendations.slice(0, 3);
+    }
     
     console.log(`✓ Generated ${recommendations.recommendations?.length || 0} recommendations`);
     
