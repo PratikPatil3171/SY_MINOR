@@ -30,6 +30,7 @@ let heroLoginBtn;
 
 let loginForm;
 let signupForm;
+let contactForm;
 let editProfileBtn;
 
 let studentSummary;
@@ -60,6 +61,8 @@ let recommendationsLoading;
 let viewRecommendationsBtn;
 let closeRecommendationsBtn;
 let collegeSearchDebounceTimer;
+let contactStatusEl;
+let contactSubmitBtn;
 
 const APTITUDE_SCORES_KEY = "careerAdvisor_aptitudeScores";
 
@@ -1614,6 +1617,72 @@ function initForms() {
   if (signupForm) {
     signupForm.addEventListener("submit", handleSignupSubmit);
   }
+  if (contactForm) {
+    contactForm.addEventListener("submit", handleContactSubmit);
+  }
+}
+
+async function handleContactSubmit(e) {
+  e.preventDefault();
+
+  const nameInput = document.getElementById("contact-name");
+  const emailInput = document.getElementById("contact-email");
+  const messageInput = document.getElementById("contact-message");
+
+  const name = (nameInput?.value || "").trim();
+  const email = (emailInput?.value || "").trim();
+  const message = (messageInput?.value || "").trim();
+
+  if (!name || !email || !message) {
+    if (contactStatusEl) {
+      contactStatusEl.textContent = "Please fill in name, email, and your query.";
+      contactStatusEl.style.color = "#fca5a5";
+    }
+    return;
+  }
+
+  try {
+    if (contactSubmitBtn) {
+      contactSubmitBtn.disabled = true;
+      contactSubmitBtn.textContent = "Sending...";
+    }
+
+    if (contactStatusEl) {
+      contactStatusEl.textContent = "Sending your query...";
+      contactStatusEl.style.color = "#93c5fd";
+    }
+
+    const res = await fetch(`${API_BASE}/contact`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, email, message }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok || !data.ok) {
+      throw new Error(data.message || "Failed to submit query");
+    }
+
+    if (contactStatusEl) {
+      contactStatusEl.textContent = "Your query has been sent successfully to careerpathsupport@gmail.com.";
+      contactStatusEl.style.color = "#86efac";
+    }
+
+    if (contactForm) {
+      contactForm.reset();
+    }
+  } catch (error) {
+    if (contactStatusEl) {
+      contactStatusEl.textContent = error.message || "Unable to send query right now. Please try again.";
+      contactStatusEl.style.color = "#fca5a5";
+    }
+  } finally {
+    if (contactSubmitBtn) {
+      contactSubmitBtn.disabled = false;
+      contactSubmitBtn.textContent = "Submit";
+    }
+  }
 }
 
 function initAptitudeTest() {
@@ -1687,6 +1756,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loginForm = document.getElementById("login-form");
   signupForm = document.getElementById("signup-form");
+  contactForm = document.getElementById("contact-form");
+  contactStatusEl = document.getElementById("contact-status");
+  contactSubmitBtn = document.getElementById("contact-submit-btn");
   editProfileBtn = document.getElementById("edit-profile-btn");
 
   studentSummary = document.getElementById("student-summary");

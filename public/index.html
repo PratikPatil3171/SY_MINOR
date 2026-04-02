@@ -684,16 +684,17 @@
                 to us.
               </p>
               <ul class="contact-list">
-                <li><strong>Email:</strong> support@careerpath.in</li>
-                <li><strong>Phone:</strong> +91-98765-43210</li>
+                <li><strong>Email:</strong> careerpathsupport@gmail.com</li>
+                <li><strong>Phone:</strong> +91-98765-00000</li>
                 <li><strong>Location:</strong> Pune, Maharashtra, India</li>
               </ul>
-              <form class="contact-form">
+              <form id="contact-form" class="contact-form">
                 <div class="form-group full">
                   <label for="contact-name">Your Name</label>
                   <input
                     type="text"
                     id="contact-name"
+                    required
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -702,6 +703,7 @@
                   <input
                     type="email"
                     id="contact-email"
+                    required
                     placeholder="you@example.com"
                   />
                 </div>
@@ -710,12 +712,14 @@
                   <textarea
                     id="contact-message"
                     rows="3"
+                    required
                     placeholder="Share your query. E.g. confused between two streams, want exam roadmap, etc."
                   ></textarea>
                 </div>
+                <p id="contact-status" class="helper-text" aria-live="polite"></p>
                 <div class="form-actions">
-                  <button type="button" class="btn btn-primary small">
-                    Submit (Coming Soon)
+                  <button id="contact-submit-btn" type="submit" class="btn btn-primary small">
+                    Submit
                   </button>
                 </div>
               </form>

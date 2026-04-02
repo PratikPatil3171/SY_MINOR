@@ -12,6 +12,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const aptitudeRoutes = require('./routes/aptitudeRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
 const collegeRoutes = require('./routes/collegeRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 // Middlewares
 const { errorHandler, notFoundHandler } = require('./middlewares/errorHandler');
@@ -37,6 +38,7 @@ app.use('/api', profileRoutes);        // /api/profile/:email
 app.use('/api', aptitudeRoutes);       // /api/aptitude-questions, /api/reset-question-pool
 app.use('/api', recommendationRoutes); // /api/recommendations
 app.use('/api', collegeRoutes);        // /api/colleges/search
+app.use('/api', contactRoutes);        // /api/contact
 
 // 404 Handler
 app.use(notFoundHandler);
