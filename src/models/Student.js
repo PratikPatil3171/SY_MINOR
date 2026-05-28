@@ -33,7 +33,7 @@ const studentSchema = new mongoose.Schema(
       type: String,
       default: null
     },
-    twelfthPercentage: {
+    twelthPercentage: {
       type: String,
       default: null
     },
@@ -59,7 +59,7 @@ const studentSchema = new mongoose.Schema(
     },
     higherStudies: {
       type: String,
-      enum: ['Yes', 'No', 'Unsure', null],
+      enum: ['Yes', 'No', 'Unsure', null,'Yes (India)', 'Yes (Abroad)', 'No', 'Undecided'],
       default: null
     },
     entranceExams: {
